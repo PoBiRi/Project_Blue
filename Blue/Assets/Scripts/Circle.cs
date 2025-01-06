@@ -15,6 +15,6 @@ public class Circle : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.Rotate(0, 0, rotationSpeed * Time.deltaTime);
+        transform.Rotate(0, 0, rotationSpeed * Time.deltaTime); //rotate
     }
 }

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class EnemyBullet : MonoBehaviour
@@ -11,7 +12,7 @@ public class EnemyBullet : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    bool IsOutOfCamera()
+    bool IsOutOfCamera() // if out of camera bullet collapse
     {
         Vector3 viewportPosition = Camera.main.WorldToViewportPoint(transform.position);
 
@@ -25,9 +26,16 @@ public class EnemyBullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Bullet")) // meet bullet collapse
         {
             Destroy(gameObject);
+        }
+
+        if (other.CompareTag("Player")) // meet player
+        {
+            Destroy(gameObject);
+            
+            GameObject.Find("Player").GetComponent<Player>().getDamage(10);
         }
     }
 }

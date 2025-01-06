@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Burst.CompilerServices;
@@ -26,9 +27,15 @@ public class PlayerBullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Enemy"))
+        if (other.CompareTag("Bullet")) // meet bullet collapse
         {
             Destroy(gameObject);
+        }
+
+        if (other.CompareTag("Enemy")) // meet enemy
+        {
+            Destroy(gameObject);
+            GameObject.Find("EXBoss").GetComponent<EXBoss>().getDamage(10);
         }
     }
 }
