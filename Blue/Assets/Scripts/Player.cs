@@ -53,6 +53,7 @@ public class Player : MonoBehaviour
     private IEnumerator Dash()
     {
         isDashing = true; // dashing
+        gameObject.tag = "Untagged"; 
         Vector2 dashDirection = movement.normalized; // dash to move direction
 
         rb.velocity = dashDirection * dashSpeed; // dash speed cal
@@ -60,6 +61,7 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(dashDuration); // wait for dash duration
 
         isDashing = false; // dashing off
+        gameObject.tag = "Player";
         rb.velocity = Vector2.zero; // dash over
         dashCooldownTimer = dashCooldown; // cooltime check
     }
