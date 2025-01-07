@@ -1258,7 +1258,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 5
   dashSpeed: 30
-  dashDuration: 0.05
+  dashDuration: 0.08
   dashCooldown: 1
   PlayerHpBar: {fileID: 1234497150}
 --- !u!212 &1314132816
