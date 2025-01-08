@@ -50,6 +50,9 @@ TagManager:
   - name: Player
     uniqueID: 1167289155
     locked: 0
+  - name: HP_UI
+    uniqueID: 2376303853
+    locked: 0
   - name: UI
     uniqueID: 1767415019
     locked: 0

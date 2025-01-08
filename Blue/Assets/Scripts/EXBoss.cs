@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,17 +8,39 @@ public class EXBoss : MonoBehaviour
 {
     public GameObject bulletPrefab;
     public Transform gunTransform;
-    public float bulletSpeed = 20f;
-    public float fireInterval = 2f;
+    public float bulletSpeed = 5f;
+    public float fireInterval = 0.5f;
     public Slider BossHpBar;
 
     private float BossHP = 100;
+    private bool rageFlag = false;
 
     // Start is called before the first frame update
     void Start()
     {
-        InvokeRepeating("ShootRandomBullet", 0f, fireInterval);
+        StartCoroutine(Pattern());
     }
+    void Update()
+    {
+        if (BossHpBar == null) // get HPBar Component
+        {
+            BossHpBar = GameObject.Find("EnemyHealthBar").GetComponent<Slider>();
+            BossHpBar.value = BossHP / 100;
+        }
+    }
+
+    private IEnumerator Pattern()
+    {
+        while (true) // 무한 반복
+        {
+            // 랜덤 방향으로 발사
+            ShootRandomBullet();
+
+            // 대기 후 다음 발사
+            yield return new WaitForSeconds(fireInterval);
+        }
+    }
+
     void ShootRandomBullet()
     {
         //random
@@ -30,6 +53,7 @@ public class EXBoss : MonoBehaviour
         // fire bullet
         FireBullet(randomDirection);
     }
+
     void FireBullet(Vector2 direction)
     {
         // create bullet
@@ -42,9 +66,39 @@ public class EXBoss : MonoBehaviour
             rb.velocity = direction * bulletSpeed;
         }
     }
+
     public void getDamage(int dmg) // get Damage to Boss
     {
+        if (rageFlag)
+        {
+            return;
+        }
         BossHP -= dmg;
+        if (BossHP <= 0)
+        {
+            BossHP = 0;
+            rageFlag = true;
+            fireInterval = 0.1f;
+        }
         BossHpBar.value = BossHP / 100;
+    }
+
+    private void OnTriggerEnter2D(Collider2D other) // if isRage finalattack on
+    {
+        if (other.CompareTag("Player") || other.CompareTag("Dashing"))
+        {
+            if (!rageFlag)
+            {
+                GameObject.Find("Player").GetComponent<Player>().getDamage(10);
+            }
+            else
+            {
+                Time.timeScale = 0f;
+                GameObject.Find("EventSystem").GetComponent<MenuManage>().isWin = true;
+                GameObject.Find("EventSystem").GetComponent<MenuManage>().isGameOver = true;
+                Destroy(gameObject);
+                Debug.Log("Finalattack"); 
+            }
+        }
     }
 }

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class BulletShoot : MonoBehaviour
@@ -8,16 +9,10 @@ public class BulletShoot : MonoBehaviour
     public Transform playerTransform;
     public float bulletSpeed = 20f;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && Time.timeScale != 0)
         {
             ShootBullet();
         }
@@ -33,6 +28,7 @@ public class BulletShoot : MonoBehaviour
 
         FireBullet(direction);
     }
+
     void FireBullet(Vector2 direction)
     {
         // make bullet

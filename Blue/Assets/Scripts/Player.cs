@@ -53,7 +53,7 @@ public class Player : MonoBehaviour
     private IEnumerator Dash()
     {
         isDashing = true; // dashing
-        gameObject.tag = "Untagged"; 
+        gameObject.tag = "Dashing"; 
         Vector2 dashDirection = movement.normalized; // dash to move direction
 
         rb.velocity = dashDirection * dashSpeed; // dash speed cal
@@ -87,6 +87,27 @@ public class Player : MonoBehaviour
     public void getDamage(int dmg) //getDamage to Player
     {
         PlayerHP -= dmg;
+        if (PlayerHP <= 0)
+        {
+            PlayerHP = 0;
+            Time.timeScale = 0f;
+            GameObject.Find("EventSystem").GetComponent<MenuManage>().isWin = false;
+            GameObject.Find("EventSystem").GetComponent<MenuManage>().isGameOver = true;
+            Debug.Log("PlayerDead");
+        }
         PlayerHpBar.value = PlayerHP / 100;
+    }
+
+    public void recoverHP(int tmp) //recoverHP
+    {
+        PlayerHP += tmp;
+        if (PlayerHP > 100) PlayerHP = 100;
+        PlayerHpBar.value = PlayerHP / 100;
+    }
+
+    public void respawn() //respawn Player
+    {
+        recoverHP(100);
+        transform.position = new Vector3(0, -2, 0);
     }
 }
