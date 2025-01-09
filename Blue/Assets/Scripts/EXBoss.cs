@@ -4,7 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class EXBoss : MonoBehaviour
+public class EXBoss : MonoBehaviour, Boss
 {
     public GameObject bulletPrefab;
     public Transform gunTransform;
@@ -100,5 +100,11 @@ public class EXBoss : MonoBehaviour
                 Debug.Log("Finalattack"); 
             }
         }
+    }
+    public void respawn()
+    {
+        BossHP = 100;
+        rageFlag = false;
+        BossHpBar.value = BossHP / 100;
     }
 }

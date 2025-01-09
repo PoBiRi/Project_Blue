@@ -1,0 +1,39 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class BulletMan_BOMB : EnemyBullet
+{
+    public GameObject bulletPrefab;
+    protected override float radius { get => base.radius = 9.8f; set => base.radius = value; }
+    public override void OutBullet()
+    {
+        Destroy(gameObject);
+        float bulletSpeed = 5f;
+        int bulletCount = 8;
+        float angleStep = 360f / bulletCount;
+        for (int i = 0; i < bulletCount; i++)
+        {
+            float angle = angleStep * i;
+            Vector2 direction = new Vector2(Mathf.Cos(Mathf.Deg2Rad * angle), Mathf.Sin(Mathf.Deg2Rad * angle));
+            // create bullet
+            GameObject bullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
+            Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
+
+            if (rb != null)
+            {
+                // apply speed and direction
+                rb.velocity = direction.normalized * bulletSpeed;
+            }
+        }
+    }
+    protected override void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Player")) // meet player
+        {
+            Destroy(gameObject);
+
+            GameObject.Find("Player").GetComponent<Player>().getDamage(10);
+        }
+    }
+}

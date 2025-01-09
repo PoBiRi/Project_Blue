@@ -400,7 +400,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68037f2e1ad39a94286bda4bfbcee095, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 50
+  rotationSpeed: 20
 --- !u!212 &141070875
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1309,7 +1309,7 @@ MonoBehaviour:
   gameOverDefeatMenu: {fileID: 1817346899}
   gameOverWinMenu: {fileID: 33738306}
   gameObj: {fileID: 1855350612}
-  EXBoss: {fileID: 5533580577600895282, guid: 7a56cf72cfca1b148843ff20e5d20185, type: 3}
+  Boss: {fileID: 5533580577600895282, guid: 2b6756387e4035e49aa814322fbdd0a1, type: 3}
   isWin: 0
   isGameOver: 0
 --- !u!1 &648041189

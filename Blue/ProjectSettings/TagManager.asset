@@ -8,6 +8,7 @@ TagManager:
   - Enemy
   - Bullet
   - Dashing
+  - EnemyBullet
   layers:
   - Default
   - TransparentFX

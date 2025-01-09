@@ -12,7 +12,7 @@ public class MenuManage : MonoBehaviour
     public GameObject gameOverDefeatMenu;
     public GameObject gameOverWinMenu;
     public GameObject gameObj;
-    public GameObject EXBoss; // 생성할 프리팹
+    public GameObject Boss; // 생성할 프리팹
 
     public bool isWin = false;
     public bool isGameOver = false;
@@ -57,7 +57,7 @@ public class MenuManage : MonoBehaviour
         isGameStart = true;
         gameObj.SetActive(true);
         mainMenu.SetActive(false);
-        Instantiate(EXBoss);
+        Instantiate(Boss);
     }
 
     public void option_returnToGame()
@@ -75,11 +75,13 @@ public class MenuManage : MonoBehaviour
         if (isWin)
         {
             gameOverWinMenu.SetActive(false);
-            Instantiate(EXBoss);
+            Instantiate(Boss);
         }
         else
         {
             gameOverDefeatMenu.SetActive(false);
+            GameObject[] objectsWithTag = GameObject.FindGameObjectsWithTag("Enemy");
+            objectsWithTag[0].GetComponent<Boss>().respawn();
         }
         GameObject.Find("Player").GetComponent<Player>().respawn();
     }
@@ -87,6 +89,14 @@ public class MenuManage : MonoBehaviour
     void deleteBullet()
     {
         GameObject[] objectsWithTag = GameObject.FindGameObjectsWithTag("Bullet");
+
+        foreach (GameObject obj in objectsWithTag)
+        {
+            Destroy(obj); // 오브젝트 삭제
+            Debug.Log(obj.name + " 삭제됨");
+        }
+
+        objectsWithTag = GameObject.FindGameObjectsWithTag("EnemyBullet");
 
         foreach (GameObject obj in objectsWithTag)
         {

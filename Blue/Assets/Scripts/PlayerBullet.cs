@@ -8,7 +8,7 @@ public class PlayerBullet : MonoBehaviour
 {
     void Update()
     {
-        if (IsOutOfCamera())
+        if (IsOutOfCircle())
         {
             Destroy(gameObject);
         }
@@ -25,9 +25,24 @@ public class PlayerBullet : MonoBehaviour
         return false;
     }
 
+    bool IsOutOfCircle()
+    {
+        // (0, 0)과 오브젝트의 위치 사이의 거리 계산
+        float distanceFromCenter = Vector2.Distance(transform.position, Vector2.zero);
+
+        // 거리 값이 반지름을 초과하면 원 밖으로 나간 것으로 판단
+        if (distanceFromCenter > 10f)
+        {
+            return true;
+        }
+
+        // 원 안에 있을 경우
+        return false;
+    }
+
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Bullet")) // meet bullet collapse
+        if (other.CompareTag("EnemyBullet")) // meet bullet collapse
         {
             Destroy(gameObject);
         }
@@ -35,7 +50,7 @@ public class PlayerBullet : MonoBehaviour
         if (other.CompareTag("Enemy")) // meet enemy
         {
             Destroy(gameObject);
-            GameObject.FindWithTag("Enemy").GetComponent<EXBoss>().getDamage(10);
+            GameObject.FindWithTag("Enemy").GetComponent<Boss>().getDamage(10);
         }
     }
 }

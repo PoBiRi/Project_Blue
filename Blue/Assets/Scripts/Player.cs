@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
-    public float moveSpeed = 5f; // move speed
+    public float moveSpeed = 7f; // move speed
     public float dashSpeed = 20f; // dash speed
     public float dashDuration = 0.1f; // dash duration
     public float dashCooldown = 1f; // dash cooltime
@@ -109,5 +109,7 @@ public class Player : MonoBehaviour
     {
         recoverHP(100);
         transform.position = new Vector3(0, -2, 0);
+        gameObject.tag = "Player";
+        isDashing = false; // dashing off
     }
 }

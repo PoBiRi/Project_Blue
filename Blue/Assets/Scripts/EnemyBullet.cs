@@ -5,11 +5,13 @@ using UnityEngine;
 
 public class EnemyBullet : MonoBehaviour
 {
+    protected virtual float radius { get; set; } = 10f;
+
     void Update()
     {
-        if (IsOutOfCamera())
+        if (IsOutOfCircle())
         {
-            Destroy(gameObject);
+            OutBullet();
         }
     }
     bool IsOutOfCamera() // if out of camera bullet collapse
@@ -23,8 +25,27 @@ public class EnemyBullet : MonoBehaviour
 
         return false;
     }
+    bool IsOutOfCircle()
+    {
+        // (0, 0)과 오브젝트의 위치 사이의 거리 계산
+        float distanceFromCenter = Vector2.Distance(transform.position, Vector2.zero);
 
-    private void OnTriggerEnter2D(Collider2D other)
+        // 거리 값이 반지름을 초과하면 원 밖으로 나간 것으로 판단
+        if (distanceFromCenter > radius)
+        {
+            return true;
+        }
+
+        // 원 안에 있을 경우
+        return false;
+    }
+
+    public virtual void OutBullet()
+    {
+        Destroy(gameObject);
+    }
+
+    protected virtual void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Bullet")) // meet bullet collapse
         {
