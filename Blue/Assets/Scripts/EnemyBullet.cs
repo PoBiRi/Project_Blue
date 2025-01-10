@@ -53,10 +53,10 @@ public class EnemyBullet : MonoBehaviour
         }
 
         if (other.CompareTag("Player")) // meet player
-        {
+        {            
             Destroy(gameObject);
             
-            GameObject.Find("Player").GetComponent<Player>().getDamage(10);
+            GameObject.Find("Player").GetComponent<Player>().getDamage(3);
         }
     }
 }

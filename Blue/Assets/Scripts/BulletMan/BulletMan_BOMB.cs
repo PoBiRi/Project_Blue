@@ -33,7 +33,7 @@ public class BulletMan_BOMB : EnemyBullet
         {
             Destroy(gameObject);
 
-            GameObject.Find("Player").GetComponent<Player>().getDamage(10);
+            GameObject.Find("Player").GetComponent<Player>().getDamage(5);
         }
     }
 }

@@ -7,9 +7,9 @@ using UnityEngine.UI;
 public class BulletMan : MonoBehaviour, Boss
 {
     public GameObject bulletPrefab;
+    public GameObject bulletPrefab_Changed;
     public GameObject bombPrefab;
     public GameObject moonPrefab;
-    public GameObject burstPrefab;
     public GameObject Player;
     public Transform gunTransform;
     public Slider BossHpBar;
@@ -46,11 +46,14 @@ public class BulletMan : MonoBehaviour, Boss
 
     private IEnumerator Pattern1()
     {
+        bool flag = false;
         while (true) // 무한 반복
         {
-            FireBulletCircle();
+            FireBulletCircle(flag, !rageFlag ? 12 : 60);
 
             yield return new WaitForSeconds(Pattern1_Interval);
+            if (flag) { flag = false; }
+            else { flag = true; }
         }
     }
 
@@ -58,20 +61,17 @@ public class BulletMan : MonoBehaviour, Boss
     {
         while (true) // 무한 반복
         {
-            SlowBullet();
-            SlowBullet();
-            SlowBullet();
-            SlowBullet();
-            SlowBullet();
-            SlowBullet();
-            SlowBullet();
+            for (int i = 0; i < (rageFlag ? 12 : 7); i++)
+            {
+                SlowBullet();
+            }
 
-            yield return new WaitForSeconds(Pattern2_Interval);
+            yield return new WaitForSeconds(rageFlag ? Pattern2_Interval - 7f : Pattern2_Interval);
         }
     }
     private IEnumerator Pattern3()
     {
-        while (true) // 무한 반복
+        while (!rageFlag) // 무한 반복
         {
             yield return new WaitForSeconds(Pattern3_Interval);
 
@@ -80,7 +80,7 @@ public class BulletMan : MonoBehaviour, Boss
     }
     private IEnumerator Pattern4()
     {
-        while (true) // 무한 반복
+        while (!rageFlag) // 무한 반복
         {
             yield return new WaitForSeconds(Pattern4_Interval);
 
@@ -92,23 +92,23 @@ public class BulletMan : MonoBehaviour, Boss
         while (true) // 무한 반복
         {
             yield return new WaitForSeconds(Pattern5_Interval);
-
             StartCoroutine(BurstBullet());
         }
     }
 
     //For Pattern1
-    void FireBulletCircle()
+    void FireBulletCircle(bool flag, int bulletCount)
     {
-        int bulletCount = 12;
         float angleStep = 360f / bulletCount;
         for (int i = 0; i < bulletCount; i++)
         {
-            float angle = angleStep * i;
+            float size = rageFlag ? 0.5f : 0.1f;
+            float angle = flag ? angleStep * i : angleStep * i + 15;
             Vector2 direction = new Vector2(Mathf.Cos(Mathf.Deg2Rad * angle), Mathf.Sin(Mathf.Deg2Rad * angle));
             // create bullet
-            GameObject bullet = Instantiate(bulletPrefab, gunTransform.position, Quaternion.identity);
+            GameObject bullet = Instantiate(rageFlag ? bulletPrefab_Changed : bulletPrefab, gunTransform.position, Quaternion.identity);
             Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
+            rb.transform.localScale = new Vector3(size, size, size);
 
             if (rb != null)
             {
@@ -133,7 +133,7 @@ public class BulletMan : MonoBehaviour, Boss
         if (rb != null)
         {
             // apply speed and direction
-            rb.velocity = (direction-spawnPosition).normalized * Pattern2_BulletSpeed;
+            rb.velocity = (direction - spawnPosition).normalized * Pattern2_BulletSpeed;
         }
     }
 
@@ -194,7 +194,7 @@ public class BulletMan : MonoBehaviour, Boss
             Player = GameObject.Find("Player");
         }
 
-        int bulletCount = 30;
+        int bulletCount = rageFlag ? 60 : 30;
         for (int i = 0; i < bulletCount; i++)
         {
             Vector2 direction = (Vector2)Player.transform.position + Random.insideUnitCircle * 1.2f;
@@ -220,6 +220,12 @@ public class BulletMan : MonoBehaviour, Boss
         BossHP -= dmg;
         if (BossHP <= 0)
         {
+            if (Player == null)
+            {
+                Player = GameObject.Find("Player");
+            }
+            Player.GetComponent<Player>().ragingPush();
+
             BossHP = 0;
             rageFlag = true;
         }
@@ -249,6 +255,5 @@ public class BulletMan : MonoBehaviour, Boss
     {
         BossHP = 100;
         rageFlag = false;
-        BossHpBar.value = BossHP / 100;
     }
 }

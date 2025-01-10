@@ -8,6 +8,7 @@ public class Player : MonoBehaviour
     public float moveSpeed = 7f; // move speed
     public float dashSpeed = 20f; // dash speed
     public float dashDuration = 0.1f; // dash duration
+    public float damageDuration = 1f; // damage duration
     public float dashCooldown = 1f; // dash cooltime
 
     public Slider PlayerHpBar;
@@ -16,7 +17,9 @@ public class Player : MonoBehaviour
     private Vector2 movement;
     private float PlayerHP = 100;
     private bool isDashing = false; // dashing
+    private bool isRaging = false; // damaging
     private float dashCooldownTimer = 0f; // dash cooltimer
+    private float ragingDuration = 0.5f; 
 
     // Start is called before the first frame update
     void Start()
@@ -41,15 +44,16 @@ public class Player : MonoBehaviour
             StartCoroutine(Dash());
         }
     }
+
     void FixedUpdate()
     {
         // Use Rigidbody2D, Move
-        if (!isDashing) // moving while not dancing
+        if (!isDashing && !isRaging) // moving while not danshing and not damaging
         {
             rb.velocity = movement.normalized * moveSpeed;
         }
     }
-
+    
     private IEnumerator Dash()
     {
         isDashing = true; // dashing
@@ -66,12 +70,51 @@ public class Player : MonoBehaviour
         dashCooldownTimer = dashCooldown; // cooltime check
     }
 
+    private IEnumerator Damaging()
+    {
+        gameObject.tag = "Dashing";
+        moveSpeed = 3f;
+
+        yield return new WaitForSeconds(damageDuration); // 일정 시간 대기
+
+        moveSpeed = 7f;
+        gameObject.tag = "Player";
+    }
+    private IEnumerator Raging()
+    {
+        isRaging = true;
+        gameObject.tag = "Dashing";
+
+        yield return new WaitForSeconds(ragingDuration); // 일정 시간 대기
+
+        gameObject.tag = "Player";
+        isRaging = false;
+    }
+
+    public void ragingPush()
+    {
+        // 캐릭터를 총알에서 멀어지는 방향으로 밀어냄
+        Vector2 pushDirection = (Vector2)rb.position;
+        rb.velocity = Vector2.zero;  // 기존 속도 초기화
+        rb.AddForce(pushDirection.normalized * 1000f, ForceMode2D.Force);
+
+        StartCoroutine(Raging());
+    }
+
     private void OnTriggerEnter2D(Collider2D other) // if on Platform rotate
     {
         if (other.CompareTag("Platform"))
         {
             transform.SetParent(other.transform);
             Debug.Log("OnPlatformon");
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D other) // if on Platform rotate
+    {
+        if (other.CompareTag("Platform"))
+        {
+            transform.SetParent(other.transform);
         }
     }
 
@@ -86,6 +129,7 @@ public class Player : MonoBehaviour
 
     public void getDamage(int dmg) //getDamage to Player
     {
+        StartCoroutine(Damaging());
         PlayerHP -= dmg;
         if (PlayerHP <= 0)
         {
@@ -108,7 +152,7 @@ public class Player : MonoBehaviour
     public void respawn() //respawn Player
     {
         recoverHP(100);
-        transform.position = new Vector3(0, -2, 0);
+        transform.position = new Vector3(0, -8, 0);
         gameObject.tag = "Player";
         isDashing = false; // dashing off
     }

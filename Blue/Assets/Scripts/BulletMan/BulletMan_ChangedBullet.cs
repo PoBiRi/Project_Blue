@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BulletMan_Moon : EnemyBullet
+public class BulletMan_ChangedBullet : EnemyBullet
 {
     private float pushForce = 40f;
     protected override void OnTriggerEnter2D(Collider2D other)

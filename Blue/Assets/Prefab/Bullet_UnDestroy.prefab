@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 2717095785887060030}
   - component: {fileID: -6045027055957772360}
   - component: {fileID: 9056505617582938758}
-  - component: {fileID: 4134479443138937752}
+  - component: {fileID: -1512782230891426438}
   m_Layer: 0
-  m_Name: Burst
+  m_Name: Bullet_UnDestroy
   m_TagString: EnemyBullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -30,7 +30,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.1, y: 0.1, z: 0.3}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -149,7 +149,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &4134479443138937752
+--- !u!114 &-1512782230891426438
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -158,8 +158,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 9021879273199654084}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b4548e00a768d543a38f05e14c35b82, type: 3}
+  m_Script: {fileID: 11500000, guid: 438163c09050e0946b9bd87ef2b54de2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  newSpeed: 5
-  delayTime: 1
