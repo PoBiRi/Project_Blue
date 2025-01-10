@@ -80,6 +80,7 @@ public class Player : MonoBehaviour
         moveSpeed = 7f;
         gameObject.tag = "Player";
     }
+
     private IEnumerator Raging()
     {
         isRaging = true;
