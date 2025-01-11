@@ -17,9 +17,10 @@ public class Player : MonoBehaviour
     private Vector2 movement;
     private float PlayerHP = 100;
     private bool isDashing = false; // dashing
-    private bool isRaging = false; // damaging
+    private bool isRaging = false; // raging
+    private bool isDamaging = false; // damaging
     private float dashCooldownTimer = 0f; // dash cooltimer
-    private float ragingDuration = 0.5f; 
+    private float ragingDuration = 1f; 
 
     // Start is called before the first frame update
     void Start()
@@ -53,7 +54,7 @@ public class Player : MonoBehaviour
             rb.velocity = movement.normalized * moveSpeed;
         }
     }
-    
+
     private IEnumerator Dash()
     {
         isDashing = true; // dashing
@@ -72,13 +73,13 @@ public class Player : MonoBehaviour
 
     private IEnumerator Damaging()
     {
-        gameObject.tag = "Dashing";
-        moveSpeed = 3f;
+        isDamaging = true;
+        moveSpeed = 1f;
 
         yield return new WaitForSeconds(damageDuration); // 일정 시간 대기
 
         moveSpeed = 7f;
-        gameObject.tag = "Player";
+        isDamaging = false;
     }
 
     private IEnumerator Raging()
@@ -130,6 +131,7 @@ public class Player : MonoBehaviour
 
     public void getDamage(int dmg) //getDamage to Player
     {
+        if (isDamaging) { return; }
         StartCoroutine(Damaging());
         PlayerHP -= dmg;
         if (PlayerHP <= 0)
@@ -156,5 +158,6 @@ public class Player : MonoBehaviour
         transform.position = new Vector3(0, -8, 0);
         gameObject.tag = "Player";
         isDashing = false; // dashing off
+        moveSpeed = 7f;
     }
 }

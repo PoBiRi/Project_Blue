@@ -255,5 +255,10 @@ public class BulletMan : MonoBehaviour, Boss
     {
         BossHP = 100;
         rageFlag = false;
+        if (BossHpBar == null) // get HPBar Component
+        {
+            BossHpBar = GameObject.Find("EnemyHealthBar").GetComponent<Slider>();
+        }
+        BossHpBar.value = BossHP / 100;
     }
 }

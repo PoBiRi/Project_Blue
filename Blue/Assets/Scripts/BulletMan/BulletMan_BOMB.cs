@@ -5,7 +5,6 @@ using UnityEngine;
 public class BulletMan_BOMB : EnemyBullet
 {
     public GameObject bulletPrefab;
-    protected override float radius { get => base.radius = 9.8f; set => base.radius = value; }
     public override void OutBullet()
     {
         Destroy(gameObject);
@@ -29,6 +28,11 @@ public class BulletMan_BOMB : EnemyBullet
     }
     protected override void OnTriggerEnter2D(Collider2D other)
     {
+        if (other.CompareTag("Wall"))
+        {
+            OutBullet();
+        }
+
         if (other.CompareTag("Player")) // meet player
         {
             Destroy(gameObject);

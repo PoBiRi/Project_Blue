@@ -5,7 +5,7 @@ using UnityEngine;
 public class CameraFollow : MonoBehaviour
 {
     public Transform player;  // 플레이어의 Transform
-    public float smoothSpeed = 0.5f;  // 카메라 이동 부드럽게 하는 속도
+    public float smoothSpeed = 1f;  // 카메라 이동 부드럽게 하는 속도
     public Vector3 offset;  // 카메라와 플레이어 간의 위치 차이
 
     public Vector2 minBounds;  // 맵의 최소 경계 (최소 x, 최소 y)

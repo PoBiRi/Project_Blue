@@ -80,6 +80,9 @@ public class MenuManage : MonoBehaviour
         else
         {
             gameOverDefeatMenu.SetActive(false);
+            GameObject[] tmp = GameObject.FindGameObjectsWithTag("Enemy");
+            Destroy(tmp[0]);
+            Instantiate(Boss);
         }
         GameObject[] objectsWithTag = GameObject.FindGameObjectsWithTag("Enemy");
         objectsWithTag[0].GetComponent<Boss>().respawn();

@@ -9,6 +9,7 @@ TagManager:
   - Bullet
   - Dashing
   - EnemyBullet
+  - Wall
   layers:
   - Default
   - TransparentFX
