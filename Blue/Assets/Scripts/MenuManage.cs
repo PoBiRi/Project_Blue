@@ -58,6 +58,7 @@ public class MenuManage : MonoBehaviour
         gameObj.SetActive(true);
         mainMenu.SetActive(false);
         Instantiate(Boss);
+        GameObject.Find("Platform").GetComponent<Circle>().respawn();
     }
 
     public void option_returnToGame()
@@ -87,6 +88,7 @@ public class MenuManage : MonoBehaviour
         GameObject[] objectsWithTag = GameObject.FindGameObjectsWithTag("Enemy");
         objectsWithTag[0].GetComponent<Boss>().respawn();
         GameObject.Find("Player").GetComponent<Player>().respawn();
+        GameObject.Find("Platform").GetComponent<Circle>().respawn();
     }
 
     void deleteBullet()

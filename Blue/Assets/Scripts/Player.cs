@@ -74,7 +74,7 @@ public class Player : MonoBehaviour
     private IEnumerator Damaging()
     {
         isDamaging = true;
-        moveSpeed = 1f;
+        moveSpeed = 2f;
 
         yield return new WaitForSeconds(damageDuration); // 일정 시간 대기
 
@@ -95,7 +95,6 @@ public class Player : MonoBehaviour
 
     public void ragingPush()
     {
-        // 캐릭터를 총알에서 멀어지는 방향으로 밀어냄
         Vector2 pushDirection = (Vector2)rb.position;
         rb.velocity = Vector2.zero;  // 기존 속도 초기화
         rb.AddForce(pushDirection.normalized * 1000f, ForceMode2D.Force);
@@ -158,6 +157,7 @@ public class Player : MonoBehaviour
         transform.position = new Vector3(0, -8, 0);
         gameObject.tag = "Player";
         isDashing = false; // dashing off
+        isDamaging = false;
         moveSpeed = 7f;
     }
 }

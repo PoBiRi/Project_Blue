@@ -47,14 +47,20 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Enemy
-    uniqueID: 2318662089
+  - name: Map
+    uniqueID: 1096022147
+    locked: 0
+  - name: Platform
+    uniqueID: 1649085945
     locked: 0
   - name: Player
     uniqueID: 1167289155
     locked: 0
   - name: Bullet
     uniqueID: 2454486139
+    locked: 0
+  - name: Enemy
+    uniqueID: 2318662089
     locked: 0
   - name: HP_UI
     uniqueID: 2376303853

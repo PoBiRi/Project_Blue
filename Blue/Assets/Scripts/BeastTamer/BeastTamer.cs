@@ -14,6 +14,7 @@ public class BeastTamer : MonoBehaviour, Boss
     public GameObject Player;
     public Transform gunTransform;
     public Slider BossHpBar;
+    public GameObject Platform;
 
     private float BossHP = 100;
     private float Pattern1_BulletSpeed = 3f;
@@ -27,10 +28,11 @@ public class BeastTamer : MonoBehaviour, Boss
     // Start is called before the first frame update
     void Start()
     {
+        Platform = GameObject.Find("Platform");
         Cloud();
         StartCoroutine(Pattern2());
         StartCoroutine(Pattern3());
-        StartCoroutine(Pattern4());;
+        StartCoroutine(Pattern4());
         shield();
     }
     void Update()
@@ -110,7 +112,7 @@ public class BeastTamer : MonoBehaviour, Boss
             if (rb != null)
             {
                 // apply speed and direction
-                rb.velocity = direction.normalized * Random.Range(5f, 10f);
+                rb.velocity = direction.normalized * Random.Range(9f, 12f);
             }
         }
     }
@@ -192,6 +194,7 @@ public class BeastTamer : MonoBehaviour, Boss
 
             BossHP = 0;
             rageFlag = true;
+            Platform.GetComponent<Circle>().ChangeRotation(-50f);
         }
         BossHpBar.value = BossHP / 100;
     }
