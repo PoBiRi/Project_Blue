@@ -2,8 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-using static UnityEditor.FilePathAttribute;
-using UnityEngine.UI;
 
 public class MenuManage : MonoBehaviour
 {
@@ -12,7 +10,7 @@ public class MenuManage : MonoBehaviour
     public GameObject gameOverDefeatMenu;
     public GameObject gameOverWinMenu;
     public GameObject gameObj;
-    public GameObject Boss; // 积己且 橇府普
+    public GameObject[] Boss; // 积己且 橇府普
 
     public bool isWin = false;
     public bool isGameOver = false;
@@ -52,12 +50,12 @@ public class MenuManage : MonoBehaviour
         }
     }
 
-    public void main_gameStart()
+    public void main_gameStart(int i)
     {
         isGameStart = true;
         gameObj.SetActive(true);
         mainMenu.SetActive(false);
-        Instantiate(Boss);
+        Instantiate(Boss[i]);
         GameObject.Find("Platform").GetComponent<Circle>().respawn();
     }
 
@@ -68,7 +66,7 @@ public class MenuManage : MonoBehaviour
         isESC = false;
     }
 
-    public void gameover_restartGame()
+    public void gameover_restartGame(int i)
     {
         gameObj.SetActive(true);
         isGameOver = false;
@@ -76,14 +74,14 @@ public class MenuManage : MonoBehaviour
         if (isWin)
         {
             gameOverWinMenu.SetActive(false);
-            Instantiate(Boss);
+            Instantiate(Boss[i]);
         }
         else
         {
             gameOverDefeatMenu.SetActive(false);
             GameObject[] tmp = GameObject.FindGameObjectsWithTag("Enemy");
             Destroy(tmp[0]);
-            Instantiate(Boss);
+            Instantiate(Boss[i]);
         }
         GameObject[] objectsWithTag = GameObject.FindGameObjectsWithTag("Enemy");
         objectsWithTag[0].GetComponent<Boss>().respawn();
