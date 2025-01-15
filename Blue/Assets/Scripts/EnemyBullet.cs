@@ -26,7 +26,7 @@ public class EnemyBullet : MonoBehaviour
         {            
             Destroy(gameObject);
             
-            GameObject.Find("Player").GetComponent<Player>().getDamage(3);
+            GameObject.Find("Player").GetComponent<Player>().getDamage(5);
         }
     }
 }

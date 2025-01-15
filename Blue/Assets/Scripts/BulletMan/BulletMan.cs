@@ -17,14 +17,17 @@ public class BulletMan : MonoBehaviour, Boss
     private float BossHP = 100;
     private float Pattern1_Interval = 2f;
     private float Pattern1_BulletSpeed = 5f;
-    private float Pattern2_Interval = 11f;
-    private float Pattern2_BulletSpeed = 3f;
+    private float Pattern2_Interval = 4f;
+    private float Pattern2_BulletSpeed = 5f;
     private float Pattern3_Interval = 9f;
     private float Pattern3_BulletSpeed = 8f;
     private float Pattern4_Interval = 7f;
     private float Pattern4_BulletSpeed = 3f;
     private float Pattern5_Interval = 17f;
     private bool rageFlag = false;
+    private float playerAngle = 0f;
+    private bool isFirst = true;
+    private int maleAttack = 0; 
 
     // Start is called before the first frame update
     void Start()
@@ -46,27 +49,41 @@ public class BulletMan : MonoBehaviour, Boss
 
     private IEnumerator Pattern1()
     {
+        int count = 0;
         bool flag = false;
         while (true) // 무한 반복
         {
-            FireBulletCircle(flag, !rageFlag ? 12 : 60);
+            if (count < 50)
+            {
+                if(rageFlag) count++;
+                FireBulletCircle(flag, !rageFlag ? 12 : 60);
 
-            yield return new WaitForSeconds(Pattern1_Interval);
-            if (flag) { flag = false; }
-            else { flag = true; }
+                yield return new WaitForSeconds(rageFlag ? Pattern1_Interval - 1.8f : Pattern1_Interval);
+                if (flag) { flag = false; }
+                else { flag = true; }
+            }
+            else {
+                if (count > 70)
+                {
+                    isFirst = true;
+                    count = 0;
+                }
+                yield return new WaitForSeconds(rageFlag ? Pattern1_Interval - 1.8f : 0);
+                count++;
+            }
         }
     }
 
     private IEnumerator Pattern2()
     {
-        while (true) // 무한 반복
+        while (!rageFlag) // 무한 반복
         {
-            for (int i = 0; i < (rageFlag ? 12 : 7); i++)
+            for (int i = 0; i < 7; i++)
             {
                 SlowBullet();
             }
 
-            yield return new WaitForSeconds(rageFlag ? Pattern2_Interval - 7f : Pattern2_Interval);
+            yield return new WaitForSeconds(Pattern2_Interval);
         }
     }
     private IEnumerator Pattern3()
@@ -89,7 +106,7 @@ public class BulletMan : MonoBehaviour, Boss
     }
     private IEnumerator Pattern5()
     {
-        while (true) // 무한 반복
+        while (!rageFlag) // 무한 반복
         {
             yield return new WaitForSeconds(Pattern5_Interval);
             StartCoroutine(BurstBullet());
@@ -99,21 +116,35 @@ public class BulletMan : MonoBehaviour, Boss
     //For Pattern1
     void FireBulletCircle(bool flag, int bulletCount)
     {
-        float angleStep = 360f / bulletCount;
+        if(rageFlag)
+        {
+            if (Player == null)
+            {
+                Player = GameObject.Find("Player");
+            }
+            if (isFirst)
+            {
+                Vector2 direction = (Vector2)Player.transform.position;
+                playerAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+                isFirst = false;
+            }
+            else playerAngle = playerAngle + Random.Range(-20f, 20f);
+        }
+        float angleStep =  rageFlag ? 320f /bulletCount : 360f / bulletCount;
         for (int i = 0; i < bulletCount; i++)
         {
             float size = rageFlag ? 0.5f : 0.1f;
-            float angle = flag ? angleStep * i : angleStep * i + 15;
+            float angle = rageFlag ? playerAngle + 20 + angleStep * i : flag ? angleStep * i : angleStep * i + 15;
             Vector2 direction = new Vector2(Mathf.Cos(Mathf.Deg2Rad * angle), Mathf.Sin(Mathf.Deg2Rad * angle));
             // create bullet
-            GameObject bullet = Instantiate(rageFlag ? bulletPrefab_Changed : bulletPrefab, gunTransform.position, Quaternion.identity);
+            GameObject bullet = Instantiate(rageFlag ? bulletPrefab_Changed : bulletPrefab, rageFlag ? direction.normalized * 1.5f : gunTransform.position, Quaternion.identity);
             Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
             rb.transform.localScale = new Vector3(size, size, size);
 
             if (rb != null)
             {
                 // apply speed and direction
-                rb.velocity = direction.normalized * Pattern1_BulletSpeed;
+                rb.velocity = direction.normalized * (rageFlag ? 1.2f : Pattern1_BulletSpeed);
             }
         }
     }
@@ -146,7 +177,9 @@ public class BulletMan : MonoBehaviour, Boss
         }
 
         // create bullet
-        Vector2 direction = Player.transform.position.normalized;
+        Vector2 direction = (Vector2)Player.transform.position;
+        float distance = Vector2.Distance(direction, Vector2.zero);
+        direction = direction + new Vector2(-direction.y, direction.x).normalized * distance * getTan(15);
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         GameObject moon = Instantiate(moonPrefab, gunTransform.position, Quaternion.Euler(new Vector3(0,0, angle)));
         Rigidbody2D rb = moon.GetComponent<Rigidbody2D>();
@@ -154,7 +187,7 @@ public class BulletMan : MonoBehaviour, Boss
         if (rb != null)
         {
             // apply speed and direction
-            rb.velocity = direction * Pattern3_BulletSpeed;
+            rb.velocity = direction.normalized * Pattern3_BulletSpeed;
         }
     }
 
@@ -168,20 +201,25 @@ public class BulletMan : MonoBehaviour, Boss
 
         int bulletCount = 20;
         float angleStep = 360f / bulletCount;
-        for (int i = 0; i < bulletCount; i++)
+        for(int j  = 0; j < 3; j++)
         {
-            float angle = angleStep * i;
-            Vector2 spawnPosition = new Vector2(Mathf.Cos(Mathf.Deg2Rad * angle) * 1f, Mathf.Sin(Mathf.Deg2Rad * angle) * 1f);
-            Vector2 direction = new Vector2(Player.transform.position.x + Mathf.Cos(Mathf.Deg2Rad * angle) * 1f, Player.transform.position.y + Mathf.Sin(Mathf.Deg2Rad * angle) * 1f);
-
-            // create bullet
-            GameObject bullet = Instantiate(bulletPrefab, spawnPosition, Quaternion.identity);
-            Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
-
-            if (rb != null)
+            Vector2 direction = Random.insideUnitCircle * 10;
+            for (int i = 0; i < bulletCount; i++)
             {
-                // apply speed and direction
-                rb.velocity = (direction - spawnPosition).normalized * Pattern4_BulletSpeed;
+                float angle = angleStep * i;
+                Vector2 spawnPosition = new Vector2(Mathf.Cos(Mathf.Deg2Rad * angle) * 1f, Mathf.Sin(Mathf.Deg2Rad * angle) * 1f);
+                direction = new Vector2(direction.x + Mathf.Cos(Mathf.Deg2Rad * angle) * 1f, direction.y + Mathf.Sin(Mathf.Deg2Rad * angle) * 1f);
+                direction = direction - spawnPosition;
+
+                // create bullet
+                GameObject bullet = Instantiate(bulletPrefab, spawnPosition, Quaternion.identity);
+                Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
+
+                if (rb != null)
+                {
+                    // apply speed and direction
+                    rb.velocity = direction.normalized * Pattern4_BulletSpeed;
+                }
             }
         }
     }
@@ -194,10 +232,12 @@ public class BulletMan : MonoBehaviour, Boss
             Player = GameObject.Find("Player");
         }
 
-        int bulletCount = rageFlag ? 60 : 30;
+        int bulletCount = 60;
         for (int i = 0; i < bulletCount; i++)
         {
             Vector2 direction = (Vector2)Player.transform.position + Random.insideUnitCircle * 1.2f;
+            float distance = Vector2.Distance(direction, Vector2.zero);
+            direction = direction + new Vector2(-direction.y, direction.x).normalized * distance * getTan(15);
             // create bullet
             GameObject bullet = Instantiate(bulletPrefab, gunTransform.position, Quaternion.identity);
             Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
@@ -228,6 +268,8 @@ public class BulletMan : MonoBehaviour, Boss
 
             BossHP = 0;
             rageFlag = true;
+            deleteBullet();
+            stopCoritines();
         }
         BossHpBar.value = BossHP / 100;
     }
@@ -242,11 +284,21 @@ public class BulletMan : MonoBehaviour, Boss
             }
             else
             {
-                Time.timeScale = 0f;
-                GameObject.Find("EventSystem").GetComponent<MenuManage>().isWin = true;
-                GameObject.Find("EventSystem").GetComponent<MenuManage>().isGameOver = true;
-                Destroy(gameObject);
-                Debug.Log("Finalattack"); 
+                if(maleAttack == 2)
+                {
+                    Time.timeScale = 0f;
+                    GameObject.Find("EventSystem").GetComponent<MenuManage>().isWin = true;
+                    GameObject.Find("EventSystem").GetComponent<MenuManage>().isGameOver = true;
+                    Destroy(gameObject);
+                    Debug.Log("Finalattack"); 
+                }
+                else
+                {
+                    maleAttack++;
+                    Player.GetComponent<Player>().ragingPush();
+                    deleteBullet();
+                    stopCoritines();
+                }
             }
         }
     }
@@ -260,5 +312,37 @@ public class BulletMan : MonoBehaviour, Boss
             BossHpBar = GameObject.Find("EnemyHealthBar").GetComponent<Slider>();
         }
         BossHpBar.value = BossHP / 100;
+    }
+
+    private float getTan(float degree)
+    {
+        float angleRadians = degree * Mathf.Deg2Rad;
+        float tangentValue = Mathf.Tan(angleRadians);
+        return tangentValue;
+    }
+
+    private void stopCoritines()
+    {
+        StopAllCoroutines();
+        StartCoroutine(Pattern1());
+    }
+
+    void deleteBullet()
+    {
+        GameObject[] objectsWithTag = GameObject.FindGameObjectsWithTag("Bullet");
+
+        foreach (GameObject obj in objectsWithTag)
+        {
+            Destroy(obj); // 오브젝트 삭제
+            Debug.Log(obj.name + " 삭제됨");
+        }
+
+        objectsWithTag = GameObject.FindGameObjectsWithTag("EnemyBullet");
+
+        foreach (GameObject obj in objectsWithTag)
+        {
+            Destroy(obj); // 오브젝트 삭제
+            Debug.Log(obj.name + " 삭제됨");
+        }
     }
 }

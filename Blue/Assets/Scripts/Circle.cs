@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Circle : MonoBehaviour
 {
-    private float rotationSpeed = 40f; 
+    private float rotationSpeed = 20f; 
 
     // Update is called once per frame
     void Update()
@@ -19,6 +19,6 @@ public class Circle : MonoBehaviour
 
     public void respawn()
     {
-        rotationSpeed = 40f;
+        rotationSpeed = 20f;
     }
 }

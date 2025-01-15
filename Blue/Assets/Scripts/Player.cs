@@ -65,8 +65,7 @@ public class Player : MonoBehaviour
 
         yield return new WaitForSeconds(dashDuration); // wait for dash duration
 
-        isDashing = false; // dashing off
-        gameObject.tag = "Player";
+        Reset();
         rb.velocity = Vector2.zero; // dash over
         dashCooldownTimer = dashCooldown; // cooltime check
     }
@@ -78,8 +77,7 @@ public class Player : MonoBehaviour
 
         yield return new WaitForSeconds(damageDuration); // 일정 시간 대기
 
-        moveSpeed = 7f;
-        isDamaging = false;
+        Reset();
     }
 
     private IEnumerator Raging()
@@ -89,8 +87,7 @@ public class Player : MonoBehaviour
 
         yield return new WaitForSeconds(ragingDuration); // 일정 시간 대기
 
-        gameObject.tag = "Player";
-        isRaging = false;
+        Reset();
     }
 
     public void ragingPush()
@@ -158,6 +155,16 @@ public class Player : MonoBehaviour
         gameObject.tag = "Player";
         isDashing = false; // dashing off
         isDamaging = false;
-        moveSpeed = 7f;
+        isRaging = false;
+        moveSpeed = 5f;
+    }
+
+    public void Reset()
+    {
+        moveSpeed = 5f;
+        isDashing = false; // dashing off
+        isDamaging = false;
+        isRaging = false;
+        gameObject.tag = "Player";
     }
 }

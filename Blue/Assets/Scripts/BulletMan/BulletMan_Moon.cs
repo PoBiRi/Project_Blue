@@ -15,7 +15,7 @@ public class BulletMan_Moon : EnemyBullet
         {
             //Destroy(gameObject);
 
-            GameObject.Find("Player").GetComponent<Player>().getDamage(5);
+            GameObject.Find("Player").GetComponent<Player>().getDamage(20);
         }
     }
 }

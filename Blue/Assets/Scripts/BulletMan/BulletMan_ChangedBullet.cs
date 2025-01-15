@@ -4,6 +4,13 @@ using UnityEngine;
 
 public class BulletMan_ChangedBullet : EnemyBullet
 {
+    private Rigidbody2D rb;
+    private void Start()
+    {
+        rb = GetComponent<Rigidbody2D>();
+        StartCoroutine(getSpeed());
+    }
+
     protected override void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Wall"))
@@ -15,7 +22,17 @@ public class BulletMan_ChangedBullet : EnemyBullet
         {
             Destroy(gameObject);
 
-            GameObject.Find("Player").GetComponent<Player>().getDamage(5);
+            GameObject.Find("Player").GetComponent<Player>().getDamage(15);
         }
     }
+
+    IEnumerator getSpeed()
+    {
+        while(true)
+        {
+            yield return new WaitForSeconds(0.1f);
+            rb.velocity *= 1.1f;
+        }
+    }
+
 }
