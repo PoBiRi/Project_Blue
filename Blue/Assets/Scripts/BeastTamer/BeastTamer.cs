@@ -15,15 +15,16 @@ public class BeastTamer : MonoBehaviour, Boss
     public Transform gunTransform;
     public Slider BossHpBar;
     public GameObject Platform;
+    public bool rageFlag = false;
 
     private float BossHP = 100;
-    private float Pattern1_BulletSpeed = 3f;
-    private float Pattern2_Interval = 5f;
-    private float Pattern3_Interval = 9f;
+    private float Pattern1_BulletSpeed = 4f;
+    private float Pattern2_Interval = 7f;
+    private float Pattern3_Interval = 5f;
     private float Pattern3_BulletSpeed = 7f;
     private float Pattern4_Interval = 11f;
     private float Pattern4_BulletSpeed = 9f;
-    private bool rageFlag = false;
+    private int maleAttack = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -46,7 +47,7 @@ public class BeastTamer : MonoBehaviour, Boss
 
     private IEnumerator Pattern2()
     {
-        while (true) // 무한 반복
+        while (!rageFlag) // 무한 반복
         {
             yield return new WaitForSeconds(Pattern2_Interval);
 
@@ -57,15 +58,15 @@ public class BeastTamer : MonoBehaviour, Boss
     {
         while (true) // 무한 반복
         {
-            yield return new WaitForSeconds(Pattern3_Interval);
-
             WingBullet();
+
+            yield return new WaitForSeconds(rageFlag ? Pattern3_Interval - 3f : Pattern3_Interval);
         }
     }
 
     private IEnumerator Pattern4()
     {
-        while (true) // 무한 반복
+        while (!rageFlag) // 무한 반복
         {
             yield return new WaitForSeconds(Pattern4_Interval);
 
@@ -105,7 +106,8 @@ public class BeastTamer : MonoBehaviour, Boss
         for (int i = 0; i < bulletCount; i++)
         {
             Vector2 direction = (Vector2)Player.transform.position + Random.insideUnitCircle * 1.4f;
-            // create bullet
+            float distance = Vector2.Distance(direction, Vector2.zero);
+            direction = direction + new Vector2(-direction.y, direction.x).normalized * distance * getTan(15);
             GameObject bullet = Instantiate(bulletPrefab, gunTransform.position, Quaternion.identity);
             Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
 
@@ -123,11 +125,12 @@ public class BeastTamer : MonoBehaviour, Boss
         for(int i = 0; i < 2; i++)
         {
             float randomAngle = Random.Range(0f, 360f);
-            Vector2 spawn = new Vector2(Mathf.Cos(randomAngle * Mathf.Deg2Rad), Mathf.Sin(randomAngle * Mathf.Deg2Rad)) * 7;
+            Vector2 spawn = new Vector2(Mathf.Cos(randomAngle * Mathf.Deg2Rad), Mathf.Sin(randomAngle * Mathf.Deg2Rad)) * 9;
             Vector2 direction = Random.insideUnitCircle * 5;
 
             GameObject bullet = Instantiate(WingPrefab, spawn, Quaternion.identity);
             Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
+            bullet.GetComponent<BeastTamer_Wing>().isRage = rageFlag;
 
             if (rb != null)
             {
@@ -173,7 +176,8 @@ public class BeastTamer : MonoBehaviour, Boss
             float toAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
             Vector2 spawn = new Vector2(Mathf.Cos(Mathf.Deg2Rad * angle), Mathf.Sin(Mathf.Deg2Rad * angle)).normalized * 2f;
             // create bullet
-            Instantiate(ShieldPrefab, spawn, Quaternion.Euler(new Vector3(0, 0, toAngle)));
+            GameObject shield = Instantiate(ShieldPrefab, spawn, Quaternion.Euler(new Vector3(0, 0, toAngle)));
+            shield.GetComponent<BeastTamer_Shield>().isRage = rageFlag;
         }
     }
 
@@ -194,7 +198,9 @@ public class BeastTamer : MonoBehaviour, Boss
 
             BossHP = 0;
             rageFlag = true;
-            Platform.GetComponent<Circle>().ChangeRotation(-50f);
+            Platform.GetComponent<Circle>().ChangeRotation(-20f);
+            deleteBullet();
+            Invoke("stopCoritines", 0.2f);
         }
         BossHpBar.value = BossHP / 100;
     }
@@ -209,13 +215,29 @@ public class BeastTamer : MonoBehaviour, Boss
             }
             else
             {
-                Time.timeScale = 0f;
-                GameObject.Find("EventSystem").GetComponent<MenuManage>().isWin = true;
-                GameObject.Find("EventSystem").GetComponent<MenuManage>().isGameOver = true;
-                Destroy(gameObject);
-                Debug.Log("Finalattack");
+                if (maleAttack == 2)
+                {
+                    Time.timeScale = 0f;
+                    GameObject.Find("EventSystem").GetComponent<MenuManage>().isWin = true;
+                    GameObject.Find("EventSystem").GetComponent<MenuManage>().isGameOver = true;
+                    Destroy(gameObject);
+                    Debug.Log("Finalattack");
+                }
+                else
+                {
+                    maleAttack++;
+                    deleteBullet();
+                    Player.GetComponent<Player>().ragingPush();
+                    Invoke("stopCoritines", 0.2f);
+                }
             }
         }
+    }
+    private float getTan(float degree)
+    {
+        float angleRadians = degree * Mathf.Deg2Rad;
+        float tangentValue = Mathf.Tan(angleRadians);
+        return tangentValue;
     }
 
     public void respawn()
@@ -227,5 +249,31 @@ public class BeastTamer : MonoBehaviour, Boss
             BossHpBar = GameObject.Find("EnemyHealthBar").GetComponent<Slider>();
         }
         BossHpBar.value = BossHP / 100;
+    }
+
+    private void stopCoritines()
+    {
+        StopAllCoroutines();
+        StartCoroutine(Pattern3());
+        shield();
+    }
+
+    void deleteBullet()
+    {
+        GameObject[] objectsWithTag = GameObject.FindGameObjectsWithTag("Bullet");
+
+        foreach (GameObject obj in objectsWithTag)
+        {
+            Destroy(obj); // 오브젝트 삭제
+            Debug.Log(obj.name + " 삭제됨");
+        }
+
+        objectsWithTag = GameObject.FindGameObjectsWithTag("EnemyBullet");
+
+        foreach (GameObject obj in objectsWithTag)
+        {
+            Destroy(obj); // 오브젝트 삭제
+            Debug.Log(obj.name + " 삭제됨");
+        }
     }
 }

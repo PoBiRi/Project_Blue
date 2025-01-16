@@ -10,6 +10,7 @@ TagManager:
   - Dashing
   - EnemyBullet
   - Wall
+  - Shield
   layers:
   - Default
   - TransparentFX

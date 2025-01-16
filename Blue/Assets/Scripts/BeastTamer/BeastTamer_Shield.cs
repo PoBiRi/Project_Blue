@@ -1,15 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class BeastTamer_Shield : EnemyBullet
 {
     public GameObject Boss;
+    public bool isRage;
+
     private float rotationSpeed = 40f;
     private float radius = 2f;  // 보스를 중심으로 하는 원의 반지름
     private float angle = 0f;  // 현재 각도
     private SpriteRenderer spriteRenderer;
     private new Collider2D collider2D;
+    private int count = 0;
 
     private void Start()
     {
@@ -22,6 +26,11 @@ public class BeastTamer_Shield : EnemyBullet
         collider2D = gameObject.GetComponent<Collider2D>();
         Vector3 directionToBoss = transform.position - Boss.transform.position;
         angle = Mathf.Atan2(directionToBoss.y, directionToBoss.x) * Mathf.Rad2Deg;
+        if (isRage)
+        {
+            gameObject.transform.localScale = new Vector3(0.3f, 2.2f, 1f);
+            Destroy(gameObject, 20f);
+        }
     }
 
     private void Update()
@@ -46,9 +55,15 @@ public class BeastTamer_Shield : EnemyBullet
     {
         if (other.CompareTag("Bullet")) // meet bullet collapse
         {
-            spriteRenderer.enabled = false;
-            collider2D.enabled = false;
-            StartCoroutine(ReactivateAfterDelay(2f));
+            if (isRage) return;
+            if (count > 4)
+            {
+                spriteRenderer.enabled = false;
+                collider2D.enabled = false;
+                StartCoroutine(ReactivateAfterDelay(3f));
+                count = 0;
+            }
+            else count++;
         }
     }
     private IEnumerator ReactivateAfterDelay(float delay)
