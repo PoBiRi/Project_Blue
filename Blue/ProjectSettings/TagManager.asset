@@ -10,7 +10,6 @@ TagManager:
   - Dashing
   - EnemyBullet
   - Wall
-  - Shield
   layers:
   - Default
   - TransparentFX
@@ -68,4 +67,7 @@ TagManager:
     locked: 0
   - name: UI
     uniqueID: 1767415019
+    locked: 0
+  - name: Controls_UI
+    uniqueID: 1415313647
     locked: 0

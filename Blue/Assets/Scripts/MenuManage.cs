@@ -1,22 +1,33 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
+using UnityEditor.Overlays;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MenuManage : MonoBehaviour
 {
     public GameObject mainMenu;
+    public GameObject controlsMenu;
     public GameObject optionMenu;
+    public GameObject ScriptsAndFlyer;
+    public GameObject Flyer;
     public GameObject gameOverDefeatMenu;
+    public CanvasGroup gameOverDefeatMenues;
     public GameObject gameOverWinMenu;
+    public RectTransform Cane;
     public GameObject gameObj;
+    public CanvasGroup HP;
     public GameObject[] Boss; // 생성할 프리팹
 
     public bool isWin = false;
     public bool isGameOver = false;
+    public bool isGameStart = false;
 
     private bool isESC = false;
-    private bool isGameStart = false;
+    private int BossNum = 0;
+    private bool isDefeatFlag = false;
+    private bool isWinFlag = false;
 
     private void Update()
     {
@@ -24,72 +35,245 @@ public class MenuManage : MonoBehaviour
         { 
             if(!isESC)
             {
-                Time.timeScale = 0f; // 게임 정지
+                stopTime(); // 게임 정지
                 optionMenu.SetActive(true);
                 isESC = true;
             }
             else
             {
-                Time.timeScale = 1f; 
+                startTime();
                 optionMenu.SetActive(false);
+                controlsMenu.SetActive(false);
                 isESC = false;
             }
         }
         if (isGameOver)
         {
-            deleteBullet();
-            gameObj.SetActive(false);
+            stopTime();
+            //gameObj.SetActive(false);
             if(isWin)
             {
-                gameOverWinMenu.SetActive(true);
+                if (!isWinFlag)
+                {
+                    isWinFlag = true;
+                    StartCoroutine(gameoverWinAni(2f));
+                }
             }
             else
             {
-                gameOverDefeatMenu.SetActive(true);
+                if (!isDefeatFlag)
+                {
+                    isDefeatFlag = true;
+                    StartCoroutine(gameoverDefeatAni(0f, 1f, 2f));
+                }
             }
         }
     }
 
-    public void main_gameStart(int i)
+    public void stopTime()
     {
-        isGameStart = true;
+        Time.timeScale = 0f; // 게임 정지
+    }
+    public void startTime()
+    {
+        Time.timeScale = 1f; 
+    }
+
+    public void main_gameStart()
+    {
+        isGameStart = false;
+        HP.alpha = 0f;
         gameObj.SetActive(true);
         mainMenu.SetActive(false);
-        Instantiate(Boss[i]);
         GameObject.Find("Platform").GetComponent<Circle>().respawn();
+        GameObject.Find("Player").GetComponent<Player>().respawn();
+        stopTime();
+        Camera.main.transform.position = new Vector3(0, -2f, -10f);
+        ScriptsAndFlyer.gameObject.SetActive(true);
+        Flyer.gameObject.SetActive(true);
+    }
+
+    public void toMain()
+    {
+        mainMenu.SetActive(true);
+        gameObj.SetActive(false);
+        optionMenu.SetActive(false);
+        gameOverDefeatMenu.SetActive(false);
+        gameOverWinMenu.SetActive(false);
+        GameObject[] tmp = GameObject.FindGameObjectsWithTag("Enemy");
+        Destroy(tmp[0]);
+        deleteBullet();
+        BossNum = 0;
+    }
+    
+    public void spawnBoss()
+    {
+        Instantiate(Boss[BossNum]);
+    }
+
+    public void main_EXIT()
+    {
+        Application.Quit();
+    }
+
+    public void controlsMenu_On()
+    {
+        controlsMenu.SetActive(true);
+    }
+
+    public void controlsMenu_Off()
+    {
+        controlsMenu.SetActive(false);
     }
 
     public void option_returnToGame()
     {
-        Time.timeScale = 1f; 
+        startTime(); 
         optionMenu.SetActive(false);
         isESC = false;
     }
 
-    public void gameover_restartGame(int i)
+
+    private IEnumerator gameoverDefeatAni(float startAlpha, float endAlpha, float duration)
     {
-        gameObj.SetActive(true);
-        isGameOver = false;
-        Time.timeScale = 1f;
-        if (isWin)
+        gameOverDefeatMenues.alpha = 0;
+        gameOverDefeatMenues.interactable = false;
+        Color finalColor = gameOverDefeatMenu.GetComponent<Image>().color;
+        finalColor.a = 0;
+        gameOverDefeatMenu.GetComponent<Image>().color = finalColor;
+
+        gameOverDefeatMenu.SetActive(true);
+        float elapsedTime = 0f;
+
+        // 시작 alpha 값 설정
+        Color startColor = gameOverDefeatMenu.GetComponent<Image>().color;
+        startColor.a = startAlpha;  // 시작 alpha 값으로 설정
+        gameOverDefeatMenu.GetComponent<Image>().color = startColor; // 초기 설정된 색상 적용
+
+        while (elapsedTime < duration)
         {
-            gameOverWinMenu.SetActive(false);
-            Instantiate(Boss[i]);
+            elapsedTime += Time.unscaledDeltaTime;
+
+            // 선형 보간을 사용하여 alpha 값 계산
+            float newAlpha = Mathf.Lerp(startAlpha, endAlpha, elapsedTime / duration);
+
+            // 이미지의 alpha 값을 변경
+            Color newColor = gameOverDefeatMenu.GetComponent<Image>().color;
+            newColor.a = newAlpha;
+            gameOverDefeatMenu.GetComponent<Image>().color = newColor;
+
+            yield return null;
         }
-        else
+
+        // 최종 alpha 값 적용
+        finalColor = gameOverDefeatMenu.GetComponent<Image>().color;
+        finalColor.a = endAlpha;
+        gameOverDefeatMenu.GetComponent<Image>().color = finalColor;
+
+        deleteBullet();
+
+        elapsedTime = 0f;
+        while (elapsedTime < duration)
         {
-            gameOverDefeatMenu.SetActive(false);
-            GameObject[] tmp = GameObject.FindGameObjectsWithTag("Enemy");
-            Destroy(tmp[0]);
-            Instantiate(Boss[i]);
+            elapsedTime += Time.unscaledDeltaTime;
+            float newAlpha = Mathf.Lerp(startAlpha, endAlpha, elapsedTime / duration); // 선형 보간
+            gameOverDefeatMenues.alpha = newAlpha;
+            yield return null;
         }
-        GameObject[] objectsWithTag = GameObject.FindGameObjectsWithTag("Enemy");
-        objectsWithTag[0].GetComponent<Boss>().respawn();
-        GameObject.Find("Player").GetComponent<Player>().respawn();
-        GameObject.Find("Platform").GetComponent<Circle>().respawn();
+        gameOverDefeatMenues.alpha = endAlpha; // 최종 alpha 값 설정
+        gameOverDefeatMenues.interactable = true;
     }
 
-    void deleteBullet()
+    public void gameoverDefeat_restartGame()
+    {
+        isGameOver = false;
+        isDefeatFlag = false;
+        gameOverDefeatMenu.SetActive(false);
+
+        GameObject[] tmp = GameObject.FindGameObjectsWithTag("Enemy");
+        Destroy(tmp[0]);
+        main_gameStart();
+    }
+
+    private IEnumerator gameoverWinAni(float duration)
+    {
+        isGameStart = false;
+        gameOverWinMenu.SetActive(true);
+        float elapsedTime = 0f;
+
+        // 시작 alpha 값 설정
+        Color startColor = gameOverWinMenu.GetComponent<Image>().color;
+        startColor.a = 0;  // 시작 alpha 값으로 설정
+        gameOverWinMenu.GetComponent<Image>().color = startColor; // 초기 설정된 색상 적용
+
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.unscaledDeltaTime;
+
+            // 선형 보간을 사용하여 alpha 값 계산
+            float newAlpha = Mathf.Lerp(0, 1f, elapsedTime / duration);
+
+            // 이미지의 alpha 값을 변경
+            Color newColor = gameOverWinMenu.GetComponent<Image>().color;
+            newColor.a = newAlpha;
+            gameOverWinMenu.GetComponent<Image>().color = newColor;
+
+            yield return null;
+        }
+
+        deleteBullet();
+        HP.alpha = 0f;
+        GameObject.Find("Player").GetComponent<Player>().respawn();
+        Camera.main.transform.position = new Vector3(0, -2f, -10f);
+
+        elapsedTime = 0f;
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.unscaledDeltaTime;
+
+            // 선형 보간을 사용하여 alpha 값 계산
+            float newAlpha = Mathf.Lerp(1, 0, elapsedTime / duration);
+
+            // 이미지의 alpha 값을 변경
+            Color newColor = gameOverWinMenu.GetComponent<Image>().color;
+            newColor.a = newAlpha;
+            gameOverWinMenu.GetComponent<Image>().color = newColor;
+
+            yield return null;
+        }
+
+        Vector2 initialPosition = Cane.anchoredPosition;
+        Vector2 downPosition = initialPosition + new Vector2(0, -450f);
+        elapsedTime = 0f;
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.unscaledDeltaTime;
+            Cane.anchoredPosition = Vector2.Lerp(initialPosition, downPosition, elapsedTime / duration);
+            yield return null;
+        }
+        Cane.anchoredPosition = downPosition;
+
+        GameObject[] tmp = GameObject.FindGameObjectsWithTag("Enemy");
+        tmp[0].transform.SetParent(Cane.transform);
+
+        elapsedTime = 0f;
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.unscaledDeltaTime;
+            Cane.anchoredPosition = Vector2.Lerp(downPosition, initialPosition, elapsedTime / duration);
+            yield return null;
+        }
+        Cane.anchoredPosition = initialPosition;
+
+        BossNum++;
+        Destroy(tmp[0]);
+        isGameOver = false;
+        isWinFlag = false;
+        gameOverWinMenu.SetActive(false);
+        main_gameStart();
+    }
+
+        void deleteBullet()
     {
         GameObject[] objectsWithTag = GameObject.FindGameObjectsWithTag("Bullet");
 

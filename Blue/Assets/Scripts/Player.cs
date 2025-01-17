@@ -151,7 +151,7 @@ public class Player : MonoBehaviour
     public void respawn() //respawn Player
     {
         recoverHP(100);
-        transform.position = new Vector3(0, -8, 0);
+        transform.position = new Vector3(0, -6.5f, 0);
         gameObject.tag = "Player";
         isDashing = false; // dashing off
         isDamaging = false;

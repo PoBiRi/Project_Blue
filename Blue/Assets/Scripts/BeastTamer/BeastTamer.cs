@@ -29,12 +29,8 @@ public class BeastTamer : MonoBehaviour, Boss
     // Start is called before the first frame update
     void Start()
     {
+        Invoke("startPattern", 0.1f);
         Platform = GameObject.Find("Platform");
-        Cloud();
-        StartCoroutine(Pattern2());
-        StartCoroutine(Pattern3());
-        StartCoroutine(Pattern4());
-        shield();
     }
     void Update()
     {
@@ -43,6 +39,14 @@ public class BeastTamer : MonoBehaviour, Boss
             BossHpBar = GameObject.Find("EnemyHealthBar").GetComponent<Slider>();
             BossHpBar.value = BossHP / 100;
         }
+    }
+    void startPattern()
+    {
+        Cloud();
+        StartCoroutine(Pattern2());
+        StartCoroutine(Pattern3());
+        StartCoroutine(Pattern4());
+        shield();
     }
 
     private IEnumerator Pattern2()
@@ -220,7 +224,7 @@ public class BeastTamer : MonoBehaviour, Boss
                     Time.timeScale = 0f;
                     GameObject.Find("EventSystem").GetComponent<MenuManage>().isWin = true;
                     GameObject.Find("EventSystem").GetComponent<MenuManage>().isGameOver = true;
-                    Destroy(gameObject);
+                    //Destroy(gameObject);
                     Debug.Log("Finalattack");
                 }
                 else

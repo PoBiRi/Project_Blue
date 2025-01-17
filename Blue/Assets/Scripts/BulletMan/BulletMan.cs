@@ -32,11 +32,7 @@ public class BulletMan : MonoBehaviour, Boss
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine(Pattern1());
-        StartCoroutine(Pattern2());
-        StartCoroutine(Pattern3());
-        StartCoroutine(Pattern4());
-        StartCoroutine(Pattern5());
+        Invoke("startPattern", 0.1f);
     }
     void Update()
     {
@@ -45,6 +41,14 @@ public class BulletMan : MonoBehaviour, Boss
             BossHpBar = GameObject.Find("EnemyHealthBar").GetComponent<Slider>();
             BossHpBar.value = BossHP / 100;
         }
+    }
+    void startPattern()
+    {
+        StartCoroutine(Pattern1());
+        StartCoroutine(Pattern2());
+        StartCoroutine(Pattern3());
+        StartCoroutine(Pattern4());
+        StartCoroutine(Pattern5());
     }
 
     private IEnumerator Pattern1()
@@ -289,7 +293,7 @@ public class BulletMan : MonoBehaviour, Boss
                     Time.timeScale = 0f;
                     GameObject.Find("EventSystem").GetComponent<MenuManage>().isWin = true;
                     GameObject.Find("EventSystem").GetComponent<MenuManage>().isGameOver = true;
-                    Destroy(gameObject);
+                    //Destroy(gameObject);
                     Debug.Log("Finalattack"); 
                 }
                 else
