@@ -18,14 +18,14 @@ public class Acrobat_AcroBullet : EnemyBullet
 
     void Start()
     {
+        float tmp = Random.Range(3, 4.8f);
         angle = Random.Range(0, 360) * Mathf.Deg2Rad; // ·£´ý °¢µµ
-        spot = new Vector2(Mathf.Cos(angle) * 3.5f, Mathf.Sin(angle) * 3.5f);
+        spot = new Vector2(Mathf.Cos(angle) * tmp, Mathf.Sin(angle) * tmp);
         distance = Vector2.Distance((Vector2)transform.position, spot);
         float crossProduct = ((Vector2)transform.position).x * spot.y - ((Vector2)transform.position).y * spot.x;
         if (crossProduct > 0) flag = true;
         rb = GetComponent<Rigidbody2D>();
         attractionForce = rb.mass * Mathf.Pow(speed, 2) / distance;
-        Destroy(gameObject, 15f);
     }
 
     void Update()
@@ -51,7 +51,7 @@ public class Acrobat_AcroBullet : EnemyBullet
 
         if (other.CompareTag("Enemy"))
         {
-            if (destroyFlag > 3)
+            if (destroyFlag > 2)
             {
                 OutBullet();
             }

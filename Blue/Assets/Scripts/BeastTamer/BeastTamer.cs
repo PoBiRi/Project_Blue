@@ -22,7 +22,7 @@ public class BeastTamer : MonoBehaviour, Boss
     private float Pattern2_Interval = 7f;
     private float Pattern3_Interval = 5f;
     private float Pattern3_BulletSpeed = 7f;
-    private float Pattern4_Interval = 11f;
+    private float Pattern4_Interval = 9f;
     private float Pattern4_BulletSpeed = 9f;
     private int maleAttack = 0;
 
@@ -64,7 +64,7 @@ public class BeastTamer : MonoBehaviour, Boss
         {
             WingBullet();
 
-            yield return new WaitForSeconds(rageFlag ? Pattern3_Interval - 3f : Pattern3_Interval);
+            yield return new WaitForSeconds(rageFlag ? Pattern3_Interval - 2.5f : Pattern3_Interval);
         }
     }
 
@@ -229,9 +229,9 @@ public class BeastTamer : MonoBehaviour, Boss
                 }
                 else
                 {
-                    maleAttack++;
                     deleteBullet();
                     Player.GetComponent<Player>().ragingPush();
+                    maleAttack++;
                     Invoke("stopCoritines", 0.2f);
                 }
             }

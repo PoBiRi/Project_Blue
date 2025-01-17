@@ -17,22 +17,19 @@ public class Acrobat : MonoBehaviour, Boss
     public GameObject Platform;
 
     private float BossHP = 100;
-    private float Pattern1_Interval = 6f;
+    private float Pattern1_Interval = 4f;
     private float Pattern2_Interval = 7f;
     private float Pattern2_BulletSpeed = 2f;
     private float Pattern3_Interval = 5f;
-    private float Pattern4_Interval = 3f;
+    private float Pattern4_Interval = 2f;
     private bool rageFlag = false;
+    private int maleAttack = 0;
 
     // Start is called before the first frame update
     void Start()
     {
         Platform = GameObject.Find("Platform");
-        StartCoroutine(Pattern1());
-        StartCoroutine(Pattern2());
-        StartCoroutine(Pattern3());
-        StartCoroutine(Pattern4());
-        Laser();
+        Invoke("startPattern", 0.1f);
     }
     void Update()
     {
@@ -41,6 +38,15 @@ public class Acrobat : MonoBehaviour, Boss
             BossHpBar = GameObject.Find("EnemyHealthBar").GetComponent<Slider>();
             BossHpBar.value = BossHP / 100;
         }
+    }
+
+    void startPattern()
+    {
+        StartCoroutine(Pattern1());
+        StartCoroutine(Pattern2());
+        StartCoroutine(Pattern3());
+        StartCoroutine(Pattern4());
+        Laser();
     }
 
     private IEnumerator Pattern1()
@@ -197,6 +203,8 @@ public class Acrobat : MonoBehaviour, Boss
             BossHP = 0;
             rageFlag = true;
             Platform.GetComponent<Circle>().ChangeRotation(-50f);
+            deleteBullet();
+            Invoke("stopCoritines", 0.2f);
         }
         BossHpBar.value = BossHP / 100;
     }
@@ -211,11 +219,21 @@ public class Acrobat : MonoBehaviour, Boss
             }
             else
             {
-                Time.timeScale = 0f;
-                GameObject.Find("EventSystem").GetComponent<MenuManage>().isWin = true;
-                GameObject.Find("EventSystem").GetComponent<MenuManage>().isGameOver = true;
-                Destroy(gameObject);
-                Debug.Log("Finalattack");
+                if (maleAttack == 2)
+                {
+                    Time.timeScale = 0f;
+                    GameObject.Find("EventSystem").GetComponent<MenuManage>().isWin = true;
+                    GameObject.Find("EventSystem").GetComponent<MenuManage>().isGameOver = true;
+                    //Destroy(gameObject);
+                    Debug.Log("Finalattack");
+                }
+                else
+                {
+                    deleteBullet();
+                    Player.GetComponent<Player>().ragingPush();
+                    maleAttack++;
+                    Invoke("stopCoritines", 0.2f);
+                }
             }
         }
     }
@@ -229,5 +247,28 @@ public class Acrobat : MonoBehaviour, Boss
             BossHpBar = GameObject.Find("EnemyHealthBar").GetComponent<Slider>();
         }
         BossHpBar.value = BossHP / 100;
+    }
+    private void stopCoritines()
+    {
+        StopAllCoroutines();
+        Laser();
+    }
+    void deleteBullet()
+    {
+        GameObject[] objectsWithTag = GameObject.FindGameObjectsWithTag("Bullet");
+
+        foreach (GameObject obj in objectsWithTag)
+        {
+            Destroy(obj); // 오브젝트 삭제
+            Debug.Log(obj.name + " 삭제됨");
+        }
+
+        objectsWithTag = GameObject.FindGameObjectsWithTag("EnemyBullet");
+
+        foreach (GameObject obj in objectsWithTag)
+        {
+            Destroy(obj); // 오브젝트 삭제
+            Debug.Log(obj.name + " 삭제됨");
+        }
     }
 }

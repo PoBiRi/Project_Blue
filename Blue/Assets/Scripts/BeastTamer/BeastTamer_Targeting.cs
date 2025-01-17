@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BeastTamer_Targeting : EnemyBullet
 {
-    private float speed = 4f;           // 총알 이동 속도
+    private float speed = 3.5f;           // 총알 이동 속도
     private float followDelay = 0.5f;    // 몇 초 뒤부터 플레이어를 따라갈지 설정
     private bool isFollowing = false; // 플레이어를 따라가고 있는지 여부
     public GameObject Player;
