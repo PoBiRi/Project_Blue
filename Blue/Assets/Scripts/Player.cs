@@ -34,6 +34,13 @@ public class Player : MonoBehaviour
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
 
+        if (movement != Vector2.zero)
+        {
+            float angle = Mathf.Atan2(movement.y, movement.x) * Mathf.Rad2Deg; // 방향 벡터에서 각도 계산
+            transform.rotation = Quaternion.Euler(0f, 0f, angle); // 오브젝트 회전
+        }
+
+
         if (dashCooldownTimer > 0)
         {
             dashCooldownTimer -= Time.deltaTime;

@@ -25,7 +25,7 @@ public class MenuManage : MonoBehaviour
     public bool isGameStart = false;
 
     private bool isESC = false;
-    private int BossNum = 0;
+    public int BossNum = 0;
     private bool isDefeatFlag = false;
     private bool isWinFlag = false;
 
