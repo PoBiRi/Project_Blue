@@ -50,11 +50,13 @@ public class Flyer : MonoBehaviour
         }
 
         rect.anchoredPosition = to; // 최종 위치로 고정
+
         if(to == Vector2.zero)  GameObject.Find("EventSystem").GetComponent<MenuManage>().spawnBoss();
         else if(to == new Vector2(0, Screen.height + 250))
         {
             gameObject.SetActive(false);
             Scripts.SetActive(true);
         }
+
     }
 }

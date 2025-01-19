@@ -80,7 +80,7 @@ public class MenuManage : MonoBehaviour
     }
     public void startTime()
     {
-        Time.timeScale = 1f;
+        StartCoroutine(ChangeTimeScale(0, 1));
         isGamePaused = false;
     }
 
@@ -343,5 +343,19 @@ public class MenuManage : MonoBehaviour
             Destroy(obj); // 오브젝트 삭제
             Debug.Log(obj.name + " 삭제됨");
         }
+    }
+
+    private IEnumerator ChangeTimeScale(float startScale, float targetTime)
+    {
+        float elapsedTime = 0f;
+
+        while (elapsedTime < 0.1f)
+        {
+            elapsedTime += Time.unscaledDeltaTime; // 실제 시간 기준으로 경과 시간 계산
+            Time.timeScale = Mathf.Lerp(startScale, targetTime, elapsedTime / 0.1f);
+            yield return null; // 다음 프레임까지 대기
+        }
+
+        Time.timeScale = targetTime; // 최종 값 설정
     }
 }
