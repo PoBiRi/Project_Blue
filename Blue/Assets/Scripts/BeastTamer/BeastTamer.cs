@@ -207,6 +207,7 @@ public class BeastTamer : MonoBehaviour, Boss
             rageFlag = true;
             animator.SetTrigger("Rage");
             Platform.GetComponent<Circle>().ChangeRotation(-20f);
+            StopAllCoroutines();
             deleteBullet();
             Invoke("stopCoritines", 1f);
         }
@@ -237,9 +238,10 @@ public class BeastTamer : MonoBehaviour, Boss
                 else
                 {
                     animator.SetTrigger("Rage");
-                    deleteBullet();
                     Player.GetComponent<Player>().ragingPush();
                     maleAttack++;
+                    StopAllCoroutines();
+                    deleteBullet();
                     Invoke("stopCoritines", 1f);
                 }
             }
@@ -266,7 +268,6 @@ public class BeastTamer : MonoBehaviour, Boss
     private void stopCoritines()
     {
         isMaleAttacked = false;
-        StopAllCoroutines();
         StartCoroutine(Pattern3());
         shield();
     }

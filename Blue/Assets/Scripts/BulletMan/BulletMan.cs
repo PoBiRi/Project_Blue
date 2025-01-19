@@ -284,6 +284,7 @@ public class BulletMan : MonoBehaviour, Boss
 
             BossHP = 0;
             rageFlag = true;
+            StopAllCoroutines();
             deleteBullet();
             Invoke("stopCoritines", 1f);
         }
@@ -313,6 +314,7 @@ public class BulletMan : MonoBehaviour, Boss
                 {
                     maleAttack++;
                     Player.GetComponent<Player>().ragingPush();
+                    StopAllCoroutines();
                     deleteBullet();
                     Invoke("stopCoritines", 1f);
                 }
@@ -341,7 +343,6 @@ public class BulletMan : MonoBehaviour, Boss
     private void stopCoritines()
     {
         isMaleAttacked = false;
-        StopAllCoroutines();
         StartCoroutine(Pattern1());
     }
 

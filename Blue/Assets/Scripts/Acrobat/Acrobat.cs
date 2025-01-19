@@ -207,6 +207,7 @@ public class Acrobat : MonoBehaviour, Boss
             rageFlag = true;
             animator.SetTrigger("Rage");
             Platform.GetComponent<Circle>().ChangeRotation(-50f);
+            StopAllCoroutines();
             deleteBullet();
             Invoke("stopCoritines", 1f);
         }
@@ -236,9 +237,10 @@ public class Acrobat : MonoBehaviour, Boss
                 }
                 else
                 {
-                    deleteBullet();
                     animator.SetTrigger("Rage");
                     Player.GetComponent<Player>().ragingPush();
+                    StopAllCoroutines();
+                    deleteBullet();
                     maleAttack++;
                     Invoke("stopCoritines", 0.2f);
                 }
@@ -259,7 +261,6 @@ public class Acrobat : MonoBehaviour, Boss
     private void stopCoritines()
     {
         isMaleAttacked = false;
-        StopAllCoroutines();
         Laser();
     }
     void deleteBullet()
