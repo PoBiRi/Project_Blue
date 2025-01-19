@@ -145,6 +145,9 @@ public class MenuManage : MonoBehaviour
     public void toMain()
     {
         isMainStart = false;
+        isGameOver = false;
+        isWinFlag = false;
+        isDefeatFlag = false;
         mainMenu.SetActive(true);
         gameObj.SetActive(false);
         optionMenu.SetActive(false);
