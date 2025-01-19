@@ -43,7 +43,7 @@ public class Scripts : MonoBehaviour
         Vector3 bound = Map.GetComponent<Collider2D>().bounds.size;
         float YBounds = bound.y / 2;
         float camHeight = Camera.main.orthographicSize;
-        while (Camera.main.transform.position.y > -YBounds + camHeight + 0.1f)
+        while (Camera.main.transform.position.y > -YBounds + camHeight)
         {
             // 현재 위치에서 아래로 이동
             Camera.main.transform.position = new Vector3(
@@ -55,7 +55,7 @@ public class Scripts : MonoBehaviour
         }
 
         // 목표 위치 도달 후 위치 고정
-        Camera.main.transform.position = new Vector3(0, -YBounds + camHeight + 0.1f, -10);
+        Camera.main.transform.position = new Vector3(0, -YBounds + camHeight, -10);
 
         main.startTime();
         Color color = Image.color;

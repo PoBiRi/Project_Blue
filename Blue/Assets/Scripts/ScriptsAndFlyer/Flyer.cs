@@ -15,9 +15,13 @@ public class Flyer : MonoBehaviour
     void Start()
     {
         // 초기 위치 설정
-        startBottomPosition = new Vector2(0, -Screen.height - 250);
-        centerPosition = Vector2.zero;
-        endTopPosition = new Vector2(0, Screen.height + 250);
+        RectTransform parentRect = flyer.parent.GetComponent<RectTransform>();
+        float parentHeight = parentRect.rect.height;
+
+        startBottomPosition = new Vector2(0, -parentHeight - 500); // 화면 아래
+        centerPosition = Vector2.zero; // 화면 중앙
+        endTopPosition = new Vector2(0, parentHeight + 500); // 화면 위
+
         flyer.anchoredPosition = startBottomPosition; // 전단지를 화면 아래로 배치
         StartCoroutine(SlideFlyerUnscaled(flyer, startBottomPosition, centerPosition, slideDuration));
     }
@@ -52,11 +56,10 @@ public class Flyer : MonoBehaviour
         rect.anchoredPosition = to; // 최종 위치로 고정
 
         if(to == Vector2.zero)  GameObject.Find("EventSystem").GetComponent<MenuManage>().spawnBoss();
-        else if(to == new Vector2(0, Screen.height + 250))
+        else if(to == endTopPosition)
         {
             gameObject.SetActive(false);
             Scripts.SetActive(true);
         }
-
     }
 }

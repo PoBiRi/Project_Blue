@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
-using UnityEditor.Overlays;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -81,6 +80,7 @@ public class MenuManage : MonoBehaviour
     public void startTime()
     {
         StartCoroutine(ChangeTimeScale(0, 1));
+        //Time.timeScale = 1f; // 게임 정지
         isGamePaused = false;
     }
 
@@ -349,10 +349,10 @@ public class MenuManage : MonoBehaviour
     {
         float elapsedTime = 0f;
 
-        while (elapsedTime < 0.1f)
+        while (elapsedTime < 0.5f)
         {
             elapsedTime += Time.unscaledDeltaTime; // 실제 시간 기준으로 경과 시간 계산
-            Time.timeScale = Mathf.Lerp(startScale, targetTime, elapsedTime / 0.1f);
+            Time.timeScale = Mathf.Lerp(startScale, targetTime, elapsedTime / 0.5f);
             yield return null; // 다음 프레임까지 대기
         }
 

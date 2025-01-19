@@ -21,7 +21,7 @@ public class CameraFollow : MonoBehaviour
     }
 
 
-    void LateUpdate()
+    void FixedUpdate()
     { 
         bound = Map.GetComponent<Collider2D>().bounds.size;
         float camHeight = cam.orthographicSize;
