@@ -32,7 +32,7 @@ public class BeastTamer : MonoBehaviour, Boss
     void Start()
     {
         animator = GetComponent<Animator>();
-        Invoke("startPattern", 0.1f);
+        Invoke("startPattern", 0.5f);
         Platform = GameObject.Find("Platform");
     }
     void Update()

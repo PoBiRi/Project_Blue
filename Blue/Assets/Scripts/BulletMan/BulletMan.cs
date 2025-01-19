@@ -34,7 +34,7 @@ public class BulletMan : MonoBehaviour, Boss
     // Start is called before the first frame update
     void Start()
     {
-        Invoke("startPattern", 0.1f);
+        Invoke("startPattern", 0.5f);
     }
     void Update()
     {

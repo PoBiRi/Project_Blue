@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class Scripts : MonoBehaviour
 {
+    public GameObject Map;
     public GameObject parent;
     public CanvasGroup canvasGroup;
     private MenuManage main;
@@ -38,6 +39,24 @@ public class Scripts : MonoBehaviour
             yield return null;
         }
         canvasGroup.alpha = endAlpha; // 최종 alpha 값 설정
+
+        Vector3 bound = Map.GetComponent<Collider2D>().bounds.size;
+        float YBounds = bound.y / 2;
+        float camHeight = Camera.main.orthographicSize;
+        while (Camera.main.transform.position.y > -YBounds + camHeight)
+        {
+            // 현재 위치에서 아래로 이동
+            Camera.main.transform.position = new Vector3(
+                0,
+                transform.position.y - 2.5f * Time.unscaledDeltaTime,
+                -10
+            );
+            yield return null; // 다음 프레임까지 대기
+        }
+
+        // 목표 위치 도달 후 위치 고정
+        Camera.main.transform.position = new Vector3(0, -YBounds + camHeight, -10);
+
         main.startTime();
         Color color = Image.color;
         color.a = Mathf.Clamp01(1);

@@ -32,7 +32,7 @@ public class Acrobat : MonoBehaviour, Boss
     {
         animator = GetComponent<Animator>();
         Platform = GameObject.Find("Platform");
-        Invoke("startPattern", 0.1f);
+        Invoke("startPattern", 0.5f);
     }
     void Update()
     {
