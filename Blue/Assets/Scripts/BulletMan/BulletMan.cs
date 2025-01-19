@@ -29,11 +29,13 @@ public class BulletMan : MonoBehaviour, Boss
     private bool isFirst = true;
     private int maleAttack = 0;
     private bool isMusic = false;
+    private Animator animator;
     private bool isMaleAttacked = false;
 
     // Start is called before the first frame update
     void Start()
     {
+        animator = GetComponent<Animator>();
         Invoke("startPattern", 0.5f);
     }
     void Update()
@@ -284,10 +286,12 @@ public class BulletMan : MonoBehaviour, Boss
 
             BossHP = 0;
             rageFlag = true;
+            animator.SetTrigger("Rage");
             StopAllCoroutines();
             deleteBullet();
             Invoke("stopCoritines", 1f);
         }
+        else animator.SetTrigger("Damage");
         BossHpBar.value = BossHP / 100;
     }
 
@@ -304,6 +308,7 @@ public class BulletMan : MonoBehaviour, Boss
                 isMaleAttacked = true;
                 if(maleAttack == 2)
                 {
+                    animator.SetBool("Defeat", true);
                     Time.timeScale = 0f;
                     MenuManage.isWin = true;
                     MenuManage.isGameOver = true;
@@ -312,6 +317,7 @@ public class BulletMan : MonoBehaviour, Boss
                 }
                 else
                 {
+                    animator.SetTrigger("Rage");
                     maleAttack++;
                     Player.GetComponent<Player>().ragingPush();
                     StopAllCoroutines();
