@@ -33,9 +33,8 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (MenuManage.isGamePaused) return;
-        if (isDashing) animator.SetBool("Dash", true);
-        else animator.SetBool("Dash", false);
+        if (MenuManage.isGamePaused || isRaging) return;
+        animator.SetBool("Dash", isDashing ?  true : false);
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
 

@@ -84,21 +84,24 @@ public class BeastTamer : MonoBehaviour, Boss
     //For Pattern1
     void Cloud()
     {
-        //random
-        float randomX = Random.Range(-1f, 1f);
-        float randomY = Random.Range(-1f, 1f);
-
-        // to vec2
-        Vector2 randomDirection = new Vector2(randomX, randomY).normalized;
-
-        GameObject bullet = Instantiate(CloudPrefab, gunTransform.position, Quaternion.identity);
-        Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
-
-        if (rb != null)
+        for(int i = 0; i < 3; i++)
         {
-            // apply speed and direction
-            rb.velocity = randomDirection * Pattern1_BulletSpeed;
+            //random
+            float randomX = Random.Range(-1f, 1f);
+            float randomY = Random.Range(-1f, 1f);
+
+            // to vec2
+            Vector2 randomDirection = new Vector2(randomX, randomY).normalized;
+
+            GameObject bullet = Instantiate(CloudPrefab, gunTransform.position, Quaternion.identity);
+            Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
+            if (rb != null)
+            {
+                // apply speed and direction
+                rb.velocity = randomDirection * Pattern1_BulletSpeed;
+            }
         }
+
     }
 
     //For Pattern2
