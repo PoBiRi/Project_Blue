@@ -21,13 +21,16 @@ public class Acrobat : MonoBehaviour, Boss
     private float Pattern2_Interval = 7f;
     private float Pattern2_BulletSpeed = 2f;
     private float Pattern3_Interval = 5f;
-    private float Pattern4_Interval = 2f;
+    private float Pattern4_Interval = 1f;
     private bool rageFlag = false;
     private int maleAttack = 0;
+    private Animator animator;
+    private bool isMaleAttacked = false;
 
     // Start is called before the first frame update
     void Start()
     {
+        animator = GetComponent<Animator>();
         Platform = GameObject.Find("Platform");
         Invoke("startPattern", 0.1f);
     }
@@ -202,10 +205,12 @@ public class Acrobat : MonoBehaviour, Boss
 
             BossHP = 0;
             rageFlag = true;
+            animator.SetTrigger("Rage");
             Platform.GetComponent<Circle>().ChangeRotation(-50f);
             deleteBullet();
-            Invoke("stopCoritines", 0.2f);
+            Invoke("stopCoritines", 1f);
         }
+        else animator.SetTrigger("Damage");
         BossHpBar.value = BossHP / 100;
     }
 
@@ -217,19 +222,22 @@ public class Acrobat : MonoBehaviour, Boss
             {
                 GameObject.Find("Player").GetComponent<Player>().getDamage(10);
             }
-            else
+            else if(!isMaleAttacked)
             {
+                isMaleAttacked = true;
                 if (maleAttack == 2)
                 {
+                    animator.SetBool("Defeat", true);
                     Time.timeScale = 0f;
-                    GameObject.Find("EventSystem").GetComponent<MenuManage>().isWin = true;
-                    GameObject.Find("EventSystem").GetComponent<MenuManage>().isGameOver = true;
+                    MenuManage.isWin = true;
+                    MenuManage.isGameOver = true;
                     //Destroy(gameObject);
                     Debug.Log("Finalattack");
                 }
                 else
                 {
                     deleteBullet();
+                    animator.SetTrigger("Rage");
                     Player.GetComponent<Player>().ragingPush();
                     maleAttack++;
                     Invoke("stopCoritines", 0.2f);
@@ -250,6 +258,7 @@ public class Acrobat : MonoBehaviour, Boss
     }
     private void stopCoritines()
     {
+        isMaleAttacked = false;
         StopAllCoroutines();
         Laser();
     }

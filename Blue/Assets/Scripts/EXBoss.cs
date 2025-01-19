@@ -94,8 +94,8 @@ public class EXBoss : MonoBehaviour, Boss
             else
             {
                 Time.timeScale = 0f;
-                GameObject.Find("EventSystem").GetComponent<MenuManage>().isWin = true;
-                GameObject.Find("EventSystem").GetComponent<MenuManage>().isGameOver = true;
+                MenuManage.isWin = true;
+                MenuManage.isGameOver = true;
                 Destroy(gameObject);
                 Debug.Log("Finalattack"); 
             }

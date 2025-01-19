@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2678589790232402436}
   - component: {fileID: 5514643386364108947}
   - component: {fileID: -7268886377063274280}
+  - component: {fileID: -1202512639308468364}
   m_Layer: 0
   m_Name: Acrobat
   m_TagString: Enemy
@@ -76,8 +77,8 @@ SpriteRenderer:
   m_SortingLayerID: -1976305207
   m_SortingLayer: 5
   m_SortingOrder: 0
-  m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 0, g: 1, b: 0.9057596, a: 1}
+  m_Sprite: {fileID: 21300000, guid: a0bc55f854039df46b3f9813fea06a55, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -170,3 +171,24 @@ MonoBehaviour:
   gunTransform: {fileID: 4880627112484769574}
   BossHpBar: {fileID: 0}
   Platform: {fileID: 0}
+--- !u!95 &-1202512639308468364
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5533580577600895282}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 740832c4e74945345a7a9df165cbbfcf, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

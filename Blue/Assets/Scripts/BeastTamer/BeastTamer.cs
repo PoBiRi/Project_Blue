@@ -25,10 +25,13 @@ public class BeastTamer : MonoBehaviour, Boss
     private float Pattern4_Interval = 9f;
     private float Pattern4_BulletSpeed = 9f;
     private int maleAttack = 0;
+    private Animator animator;
+    private bool isMaleAttacked = false;
 
     // Start is called before the first frame update
     void Start()
     {
+        animator = GetComponent<Animator>();
         Invoke("startPattern", 0.1f);
         Platform = GameObject.Find("Platform");
     }
@@ -202,10 +205,12 @@ public class BeastTamer : MonoBehaviour, Boss
 
             BossHP = 0;
             rageFlag = true;
+            animator.SetTrigger("Rage");
             Platform.GetComponent<Circle>().ChangeRotation(-20f);
             deleteBullet();
-            Invoke("stopCoritines", 0.2f);
+            Invoke("stopCoritines", 1f);
         }
+        else animator.SetTrigger("Damage");
         BossHpBar.value = BossHP / 100;
     }
 
@@ -217,22 +222,25 @@ public class BeastTamer : MonoBehaviour, Boss
             {
                 GameObject.Find("Player").GetComponent<Player>().getDamage(10);
             }
-            else
+            else if(!isMaleAttacked)
             {
+                isMaleAttacked = true;
                 if (maleAttack == 2)
                 {
+                    animator.SetBool("Defeat", true);
                     Time.timeScale = 0f;
-                    GameObject.Find("EventSystem").GetComponent<MenuManage>().isWin = true;
-                    GameObject.Find("EventSystem").GetComponent<MenuManage>().isGameOver = true;
+                    MenuManage.isWin = true;
+                    MenuManage.isGameOver = true;
                     //Destroy(gameObject);
                     Debug.Log("Finalattack");
                 }
                 else
                 {
+                    animator.SetTrigger("Rage");
                     deleteBullet();
                     Player.GetComponent<Player>().ragingPush();
                     maleAttack++;
-                    Invoke("stopCoritines", 0.2f);
+                    Invoke("stopCoritines", 1f);
                 }
             }
         }
@@ -257,6 +265,7 @@ public class BeastTamer : MonoBehaviour, Boss
 
     private void stopCoritines()
     {
+        isMaleAttacked = false;
         StopAllCoroutines();
         StartCoroutine(Pattern3());
         shield();

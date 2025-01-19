@@ -20,17 +20,22 @@ public class Player : MonoBehaviour
     private bool isRaging = false; // raging
     private bool isDamaging = false; // damaging
     private float dashCooldownTimer = 0f; // dash cooltimer
-    private float ragingDuration = 1f; 
+    private float ragingDuration = 1f;
+    private Animator animator;
 
     // Start is called before the first frame update
     void Start()
     {
+        animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (MenuManage.isGamePaused) return;
+        if (isDashing) animator.SetBool("Dash", true);
+        else animator.SetBool("Dash", false);
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
 
@@ -141,8 +146,8 @@ public class Player : MonoBehaviour
         {
             PlayerHP = 0;
             Time.timeScale = 0f;
-            GameObject.Find("EventSystem").GetComponent<MenuManage>().isWin = false;
-            GameObject.Find("EventSystem").GetComponent<MenuManage>().isGameOver = true;
+            MenuManage.isWin = false;
+            MenuManage.isGameOver = true;
             Debug.Log("PlayerDead");
         }
         PlayerHpBar.value = PlayerHP / 100;

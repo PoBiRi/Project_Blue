@@ -27,7 +27,9 @@ public class BulletMan : MonoBehaviour, Boss
     private bool rageFlag = false;
     private float playerAngle = 0f;
     private bool isFirst = true;
-    private int maleAttack = 0; 
+    private int maleAttack = 0;
+    private bool isMusic = false;
+    private bool isMaleAttacked = false;
 
     // Start is called before the first frame update
     void Start()
@@ -36,6 +38,16 @@ public class BulletMan : MonoBehaviour, Boss
     }
     void Update()
     {
+        if (MenuManage.isGameStart && !isMusic)
+        {
+            gameObject.GetComponent<AudioSource>().Play();
+            isMusic = true;
+        }
+        if (!MenuManage.isGameStart && isMusic)
+        {
+            gameObject.GetComponent<AudioSource>().Stop();
+            isMusic = false;
+        }
         if (BossHpBar == null) // get HPBar Component
         {
             BossHpBar = GameObject.Find("EnemyHealthBar").GetComponent<Slider>();
@@ -273,7 +285,7 @@ public class BulletMan : MonoBehaviour, Boss
             BossHP = 0;
             rageFlag = true;
             deleteBullet();
-            stopCoritines();
+            Invoke("stopCoritines", 1f);
         }
         BossHpBar.value = BossHP / 100;
     }
@@ -286,22 +298,23 @@ public class BulletMan : MonoBehaviour, Boss
             {
                 GameObject.Find("Player").GetComponent<Player>().getDamage(10);
             }
-            else
+            else if(!isMaleAttacked)
             {
+                isMaleAttacked = true;
                 if(maleAttack == 2)
                 {
                     Time.timeScale = 0f;
-                    GameObject.Find("EventSystem").GetComponent<MenuManage>().isWin = true;
-                    GameObject.Find("EventSystem").GetComponent<MenuManage>().isGameOver = true;
+                    MenuManage.isWin = true;
+                    MenuManage.isGameOver = true;
                     //Destroy(gameObject);
-                    Debug.Log("Finalattack"); 
+                    Debug.Log("Finalattack");
                 }
                 else
                 {
                     maleAttack++;
                     Player.GetComponent<Player>().ragingPush();
                     deleteBullet();
-                    stopCoritines();
+                    Invoke("stopCoritines", 1f);
                 }
             }
         }
@@ -327,6 +340,7 @@ public class BulletMan : MonoBehaviour, Boss
 
     private void stopCoritines()
     {
+        isMaleAttacked = false;
         StopAllCoroutines();
         StartCoroutine(Pattern1());
     }

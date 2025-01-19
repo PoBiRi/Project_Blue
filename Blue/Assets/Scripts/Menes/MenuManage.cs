@@ -20,14 +20,17 @@ public class MenuManage : MonoBehaviour
     public CanvasGroup HP;
     public GameObject[] Boss; // 생성할 프리팹
 
-    public bool isWin = false;
-    public bool isGameOver = false;
-    public bool isGameStart = false;
+    public static bool isGamePaused { get; private set; } = false;
+    public static bool isWin { get; set;} = false;
+    public static bool isGameOver { get; set; } = false;
+    public static bool isGameStart  { get; set; } = false;
 
     private bool isESC = false;
     public int BossNum = 0;
     private bool isDefeatFlag = false;
     private bool isWinFlag = false;
+    private bool isMainStart = false;
+
 
     private void Update()
     {
@@ -73,28 +76,75 @@ public class MenuManage : MonoBehaviour
     public void stopTime()
     {
         Time.timeScale = 0f; // 게임 정지
+        isGamePaused = true;
     }
     public void startTime()
     {
-        Time.timeScale = 1f; 
+        Time.timeScale = 1f;
+        isGamePaused = false;
     }
 
     public void main_gameStart()
     {
+        Camera.main.transform.position = new Vector3(0, -2f, -10f);
+        stopTime();
         isGameStart = false;
         HP.alpha = 0f;
         gameObj.SetActive(true);
-        mainMenu.SetActive(false);
         GameObject.Find("Platform").GetComponent<Circle>().respawn();
         GameObject.Find("Player").GetComponent<Player>().respawn();
-        stopTime();
-        Camera.main.transform.position = new Vector3(0, -2f, -10f);
+        if (!isMainStart)
+        {
+            isMainStart = true;
+            float duration = GetComponent<MenuSounds>().audioClips[0].length;
+            StartCoroutine(mainFadeOutIn(duration));
+        }
+        else
+        {
+            mainMenu.SetActive(false);
+            ScriptsAndFlyer.gameObject.SetActive(true);
+            Flyer.gameObject.SetActive(true);
+        }
+    }
+
+    private IEnumerator mainFadeOutIn(float duration)
+    {
+        CanvasGroup mainGroupBlack = GameObject.Find("BlackOut").GetComponent<CanvasGroup>();
+        CanvasGroup mainGroup = GameObject.Find("Menues").GetComponent<CanvasGroup>();
+        mainGroup.interactable = false;
+
+        float elapsedTime = 0f;
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.unscaledDeltaTime;
+            float newAlpha = Mathf.Lerp(1, 0, elapsedTime / duration); // 선형 보간
+            mainGroup.alpha = newAlpha;
+            yield return null;
+        }
+        mainGroup.alpha = 0; // 최종 alpha 값 설정
+
+
+        elapsedTime = 0f;
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.unscaledDeltaTime;
+            float newAlpha = Mathf.Lerp(1, 0, elapsedTime / 2f); // 선형 보간
+            mainGroupBlack.alpha = newAlpha;
+            yield return null;
+        }
+        mainGroupBlack.alpha = 0;
+
+        mainMenu.SetActive(false);
+        mainGroup.alpha = 1;
+        mainGroupBlack.alpha = 1;
+        mainGroup.interactable = true;
         ScriptsAndFlyer.gameObject.SetActive(true);
         Flyer.gameObject.SetActive(true);
     }
 
     public void toMain()
     {
+        isMainStart = false;
         mainMenu.SetActive(true);
         gameObj.SetActive(false);
         optionMenu.SetActive(false);
@@ -133,9 +183,9 @@ public class MenuManage : MonoBehaviour
         isESC = false;
     }
 
-
     private IEnumerator gameoverDefeatAni(float startAlpha, float endAlpha, float duration)
     {
+        isGameStart = false;
         gameOverDefeatMenues.alpha = 0;
         gameOverDefeatMenues.interactable = false;
         Color finalColor = gameOverDefeatMenu.GetComponent<Image>().color;

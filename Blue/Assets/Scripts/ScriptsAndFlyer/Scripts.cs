@@ -44,6 +44,6 @@ public class Scripts : MonoBehaviour
         Image.color = color;
         gameObject.SetActive(false);
         parent.SetActive(false);
-        GameObject.Find("EventSystem").GetComponent<MenuManage>().isGameStart = true;
+        MenuManage.isGameStart = true;
     }
 }

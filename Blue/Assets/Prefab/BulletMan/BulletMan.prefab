@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2678589790232402436}
   - component: {fileID: 5514643386364108947}
   - component: {fileID: -1688546837400727470}
-  - component: {fileID: 8913833213971954916}
+  - component: {fileID: 708424354232643846}
   m_Layer: 0
   m_Name: BulletMan
   m_TagString: Enemy
@@ -169,7 +169,7 @@ MonoBehaviour:
   Player: {fileID: 0}
   gunTransform: {fileID: 4880627112484769574}
   BossHpBar: {fileID: 0}
---- !u!82 &8913833213971954916
+--- !u!82 &708424354232643846
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -181,7 +181,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 8f116ad9b901b20448fd16fda9a27fc6, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.3
   m_Pitch: 1
   Loop: 1
   Mute: 0
