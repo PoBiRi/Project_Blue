@@ -5,6 +5,16 @@ using UnityEngine;
 
 public class EnemyBullet : MonoBehaviour
 {
+    private Rigidbody2D drb;
+
+    private void Start()
+    {
+        drb = GetComponent<Rigidbody2D>();
+        Vector2 direction = drb.velocity;
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.Euler(0, 0, angle - 90);
+    }
+
     public virtual void OutBullet()
     {
         Destroy(gameObject);

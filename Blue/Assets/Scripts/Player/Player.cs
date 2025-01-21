@@ -33,8 +33,8 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (MenuManage.isGamePaused || isRaging) return;
         animator.SetBool("Dash", isDashing ?  true : false);
+        if (MenuManage.isGamePaused || isRaging) return;
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
 
@@ -77,7 +77,7 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(dashDuration); // wait for dash duration
 
         Reset();
-        rb.velocity = Vector2.zero; // dash over
+        //rb.velocity = Vector2.zero; // dash over
         dashCooldownTimer = dashCooldown; // cooltime check
     }
 
@@ -95,18 +95,18 @@ public class Player : MonoBehaviour
     {
         isRaging = true;
         gameObject.tag = "Dashing";
+        Vector2 pushDirection = (Vector2)rb.position;
+        rb.velocity = Vector2.zero;  // 기존 속도 초기화
+        rb.AddForce(pushDirection.normalized * 1000f, ForceMode2D.Force);
 
         yield return new WaitForSeconds(ragingDuration); // 일정 시간 대기
 
+        isRaging = false;
         Reset();
     }
 
     public void ragingPush()
     {
-        Vector2 pushDirection = (Vector2)rb.position;
-        rb.velocity = Vector2.zero;  // 기존 속도 초기화
-        rb.AddForce(pushDirection.normalized * 1000f, ForceMode2D.Force);
-
         StartCoroutine(Raging());
     }
 
@@ -175,7 +175,6 @@ public class Player : MonoBehaviour
         moveSpeed = 5f;
         isDashing = false; // dashing off
         isDamaging = false;
-        isRaging = false;
         gameObject.tag = "Player";
     }
 }

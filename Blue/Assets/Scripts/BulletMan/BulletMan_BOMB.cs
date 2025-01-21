@@ -5,8 +5,10 @@ using UnityEngine;
 public class BulletMan_BOMB : EnemyBullet
 {
     public GameObject bulletPrefab;
+    public GameObject bulletPrefab2;
     public override void OutBullet()
     {
+        bool flag = false;
         Destroy(gameObject);
         float bulletSpeed = 5f;
         int bulletCount = 8;
@@ -16,7 +18,7 @@ public class BulletMan_BOMB : EnemyBullet
             float angle = angleStep * i;
             Vector2 direction = new Vector2(Mathf.Cos(Mathf.Deg2Rad * angle), Mathf.Sin(Mathf.Deg2Rad * angle));
             // create bullet
-            GameObject bullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
+            GameObject bullet = Instantiate(flag ? bulletPrefab : bulletPrefab2, transform.position, Quaternion.identity);
             Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
 
             if (rb != null)
@@ -24,6 +26,7 @@ public class BulletMan_BOMB : EnemyBullet
                 // apply speed and direction
                 rb.velocity = direction.normalized * bulletSpeed;
             }
+            flag = !flag;
         }
     }
     protected override void OnTriggerEnter2D(Collider2D other)

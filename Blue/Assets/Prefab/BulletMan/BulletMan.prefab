@@ -128,7 +128,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0696e789587dc34fa546fbe61785124, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletPrefab: {fileID: 9021879273199654084, guid: 3fcf8927e71745a4d93ead10bcf62ea8, type: 3}
+  bulletPrefab: {fileID: 9021879273199654084, guid: 9cafeced538d4194daebdb2017431966, type: 3}
+  ringPrefab: {fileID: 9021879273199654084, guid: 4731218c987a33b4c89bd8a139d3716b, type: 3}
   bulletPrefab_Changed: {fileID: 9021879273199654084, guid: 8a2e0ede9f6dae248af267c02c3b8268, type: 3}
   bombPrefab: {fileID: 9021879273199654084, guid: 4ab47abd35d9d39439183125f7ea3fc1, type: 3}
   moonPrefab: {fileID: 9021879273199654084, guid: e2a669343ce76644ca235b31b8f7f417, type: 3}

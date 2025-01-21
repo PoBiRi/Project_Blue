@@ -9,7 +9,7 @@ public class BeastTamer : MonoBehaviour, Boss
     public GameObject bulletPrefab;
     public GameObject CloudPrefab;
     public GameObject WingPrefab;
-    public GameObject TargetingPrefab;
+    public GameObject ZigZagPrefab;
     public GameObject ShieldPrefab;
     public GameObject Player;
     public Transform gunTransform;
@@ -22,8 +22,8 @@ public class BeastTamer : MonoBehaviour, Boss
     private float Pattern2_Interval = 7f;
     private float Pattern3_Interval = 5f;
     private float Pattern3_BulletSpeed = 7f;
-    private float Pattern4_Interval = 9f;
-    private float Pattern4_BulletSpeed = 9f;
+    private float Pattern4_Interval = 2f;
+    private float Pattern4_BulletSpeed = 7f;
     private int maleAttack = 0;
     private Animator animator;
     private bool isMaleAttacked = false;
@@ -67,7 +67,7 @@ public class BeastTamer : MonoBehaviour, Boss
         {
             WingBullet();
 
-            yield return new WaitForSeconds(rageFlag ? Pattern3_Interval - 2.5f : Pattern3_Interval);
+            yield return new WaitForSeconds(rageFlag ? Pattern3_Interval - 3f : Pattern3_Interval);
         }
     }
 
@@ -77,31 +77,27 @@ public class BeastTamer : MonoBehaviour, Boss
         {
             yield return new WaitForSeconds(Pattern4_Interval);
 
-            TargetingBullet();
+            ZigZagBullet();
         }
     }
 
     //For Pattern1
     void Cloud()
     {
-        for(int i = 0; i < 3; i++)
+        //random
+        float randomX = Random.Range(-1f, 1f);
+        float randomY = Random.Range(-1f, 1f);
+
+        // to vec2
+        Vector2 randomDirection = new Vector2(randomX, randomY).normalized;
+
+        GameObject bullet = Instantiate(CloudPrefab, gunTransform.position, Quaternion.identity);
+        Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
+        if (rb != null)
         {
-            //random
-            float randomX = Random.Range(-1f, 1f);
-            float randomY = Random.Range(-1f, 1f);
-
-            // to vec2
-            Vector2 randomDirection = new Vector2(randomX, randomY).normalized;
-
-            GameObject bullet = Instantiate(CloudPrefab, gunTransform.position, Quaternion.identity);
-            Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
-            if (rb != null)
-            {
-                // apply speed and direction
-                rb.velocity = randomDirection * Pattern1_BulletSpeed;
-            }
+            // apply speed and direction
+            rb.velocity = randomDirection * Pattern1_BulletSpeed;
         }
-
     }
 
     //For Pattern2
@@ -151,20 +147,20 @@ public class BeastTamer : MonoBehaviour, Boss
     }
 
     //For Pattern4
-    void TargetingBullet()
+    void ZigZagBullet()
     {
         if (Player == null)
         {
             Player = GameObject.Find("Player");
         }
 
-        float angleStep = 360f / 6;
-        for (int i = 0; i < 6; i++)
+        float angleStep = 360f / 8;
+        for (int i = 0; i < 8; i++)
         {
             float angle = angleStep * i;
             Vector2 direction = new Vector2(Mathf.Cos(Mathf.Deg2Rad * angle), Mathf.Sin(Mathf.Deg2Rad * angle));
             // create bullet
-            GameObject bullet = Instantiate(TargetingPrefab, gunTransform.position, Quaternion.identity);
+            GameObject bullet = Instantiate(ZigZagPrefab, gunTransform.position, Quaternion.identity);
             Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
 
             if (rb != null)

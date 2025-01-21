@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class BulletMan : MonoBehaviour, Boss
 {
     public GameObject bulletPrefab;
+    public GameObject ringPrefab;
     public GameObject bulletPrefab_Changed;
     public GameObject bombPrefab;
     public GameObject moonPrefab;
@@ -198,8 +199,7 @@ public class BulletMan : MonoBehaviour, Boss
         Vector2 direction = (Vector2)Player.transform.position;
         float distance = Vector2.Distance(direction, Vector2.zero);
         direction = direction + new Vector2(-direction.y, direction.x).normalized * distance * getTan(15);
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        GameObject moon = Instantiate(moonPrefab, gunTransform.position, Quaternion.Euler(new Vector3(0,0, angle)));
+        GameObject moon = Instantiate(moonPrefab, gunTransform.position, Quaternion.identity);
         Rigidbody2D rb = moon.GetComponent<Rigidbody2D>();
 
         if (rb != null)
@@ -230,7 +230,7 @@ public class BulletMan : MonoBehaviour, Boss
                 direction = direction - spawnPosition;
 
                 // create bullet
-                GameObject bullet = Instantiate(bulletPrefab, spawnPosition, Quaternion.identity);
+                GameObject bullet = Instantiate(ringPrefab, spawnPosition, Quaternion.identity);
                 Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
 
                 if (rb != null)

@@ -9,6 +9,9 @@ public class BulletMan_ChangedBullet : EnemyBullet
     {
         rb = GetComponent<Rigidbody2D>();
         StartCoroutine(getSpeed());
+        Vector2 direction = rb.velocity;
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.Euler(0, 0, angle - 90);
     }
 
     protected override void OnTriggerEnter2D(Collider2D other)

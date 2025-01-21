@@ -3559,7 +3559,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1167289155
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 1ad2802e64ff7fe448f4d5c6b1e52923, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -3664,6 +3664,10 @@ MonoBehaviour:
   bulletPrefab: {fileID: 9021879273199654084, guid: 9a3abf0ea7cb9c8499b03c9abf6fffe2, type: 3}
   playerTransform: {fileID: 1314132817}
   bulletSpeed: 20
+  gunSounds:
+  - {fileID: 8300000, guid: d30bda9174d0e4f41ba83e9189862835, type: 3}
+  - {fileID: 8300000, guid: 446140c46bf202248afade897ea92de9, type: 3}
+  - {fileID: 8300000, guid: 1eb63bf1d4703d648a7e025df5630a80, type: 3}
 --- !u!95 &1314132821
 Animator:
   serializedVersion: 5
