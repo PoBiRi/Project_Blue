@@ -12,12 +12,17 @@ public class BeastTamer_Wing : EnemyBullet
     private int currentIndex = 0;
     private int maxBullets = 50;
     public bool isRage;
+    private Rigidbody2D rb;
 
     private void Start()
     {
         spawnedBullets = new GameObject[maxBullets];
         StartCoroutine(SpawnBullet());
         isRage = GameObject.Find("BeastTamer(Clone)").GetComponent<BeastTamer>().rageFlag;
+        rb = GetComponent<Rigidbody2D>();
+        Vector2 direction = rb.velocity;
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.Euler(0, 0, angle - 90);
     }
 
 

@@ -6,7 +6,7 @@ using static Unity.IO.LowLevel.Unsafe.AsyncReadManagerMetrics;
 
 public class BeastTamer : MonoBehaviour, Boss
 {
-    public GameObject bulletPrefab;
+    public GameObject ShotgunPrefab;
     public GameObject CloudPrefab;
     public GameObject WingPrefab;
     public GameObject ZigZagPrefab;
@@ -114,7 +114,7 @@ public class BeastTamer : MonoBehaviour, Boss
             Vector2 direction = (Vector2)Player.transform.position + Random.insideUnitCircle * 1.4f;
             float distance = Vector2.Distance(direction, Vector2.zero);
             direction = direction + new Vector2(-direction.y, direction.x).normalized * distance * getTan(15);
-            GameObject bullet = Instantiate(bulletPrefab, gunTransform.position, Quaternion.identity);
+            GameObject bullet = Instantiate(ShotgunPrefab, gunTransform.position, Quaternion.identity);
             Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
 
             if (rb != null)
@@ -182,7 +182,7 @@ public class BeastTamer : MonoBehaviour, Boss
             float toAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
             Vector2 spawn = new Vector2(Mathf.Cos(Mathf.Deg2Rad * angle), Mathf.Sin(Mathf.Deg2Rad * angle)).normalized * 2f;
             // create bullet
-            GameObject shield = Instantiate(ShieldPrefab, spawn, Quaternion.Euler(new Vector3(0, 0, toAngle)));
+            GameObject shield = Instantiate(ShieldPrefab, spawn, Quaternion.Euler(new Vector3(0, 0, toAngle - 90)));
             shield.GetComponent<BeastTamer_Shield>().isRage = rageFlag;
         }
     }

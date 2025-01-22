@@ -28,7 +28,7 @@ public class BeastTamer_Shield : EnemyBullet
         angle = Mathf.Atan2(directionToBoss.y, directionToBoss.x) * Mathf.Rad2Deg;
         if (isRage)
         {
-            gameObject.transform.localScale = new Vector3(0.3f, 2.2f, 1f);
+            gameObject.transform.localScale = new Vector3(0.6f, 0.6f, 1f);
             Destroy(gameObject, 20f);
         }
     }
@@ -48,7 +48,7 @@ public class BeastTamer_Shield : EnemyBullet
 
         Vector3 directionToBoss = Boss.transform.position - transform.position;  // 보스 방향 계산
         float angleToRotate = Mathf.Atan2(directionToBoss.y, directionToBoss.x) * Mathf.Rad2Deg;  // 보스를 마주보는 회전 각도 계산
-        transform.rotation = Quaternion.Euler(new Vector3(0, 0, angleToRotate));  // 오브젝트 회전
+        transform.rotation = Quaternion.Euler(new Vector3(0, 0, angleToRotate - 180));  // 오브젝트 회전
     }
 
     protected override void OnTriggerEnter2D(Collider2D other)

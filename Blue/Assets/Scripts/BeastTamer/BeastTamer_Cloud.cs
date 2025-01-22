@@ -9,6 +9,9 @@ public class BeastTamer_Cloud : EnemyBullet
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        Vector2 direction = rb.velocity;
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.Euler(0, 0, angle - 45);
     }
 
     protected override void OnTriggerEnter2D(Collider2D other)
@@ -32,6 +35,9 @@ public class BeastTamer_Cloud : EnemyBullet
 
             // 새 속도 적용
             rb.velocity = reflectVelocity.normalized * 3f;
+            Vector2 direction = rb.velocity;
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            transform.rotation = Quaternion.Euler(0, 0, angle - 45);
         }
     }
     protected void OnTriggerStay2D(Collider2D other)
