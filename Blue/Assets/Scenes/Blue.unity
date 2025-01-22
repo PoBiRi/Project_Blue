@@ -1866,7 +1866,7 @@ MonoBehaviour:
   - {fileID: 5533580577600895282, guid: 2b6756387e4035e49aa814322fbdd0a1, type: 3}
   - {fileID: 5533580577600895282, guid: daa37272984e95a43b9e4b72e4ef0403, type: 3}
   - {fileID: 5533580577600895282, guid: 1c0cf588bf98357458466a20498445e0, type: 3}
-  BossNum: 1
+  BossNum: 2
 --- !u!114 &624027558
 MonoBehaviour:
   m_ObjectHideFlags: 0

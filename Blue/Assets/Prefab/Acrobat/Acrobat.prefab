@@ -132,6 +132,7 @@ MonoBehaviour:
   ringPrefab: {fileID: 9021879273199654084, guid: 4361e9b87eb6f3043be375e510c46845, type: 3}
   slowMoonPrefab: {fileID: 9021879273199654084, guid: 893c0e1400b287c41ab35432357e246a, type: 3}
   laserPrefab: {fileID: 9021879273199654084, guid: 2d3ec8155a6d54a46a093e4a193a417c, type: 3}
+  laserEndPrefab: {fileID: 9021879273199654084, guid: 104953a90196fe8488a1a48e9938c7e3, type: 3}
   Player: {fileID: 0}
   gunTransform: {fileID: 4880627112484769574}
   BossHpBar: {fileID: 0}

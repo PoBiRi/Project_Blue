@@ -8,6 +8,7 @@ public class Acrobat_SlowMoon : EnemyBullet
     private Transform donutCenter; // 도넛의 중심점
     private float donutRadius =10f; // 도넛의 테두리 반지름
     private float attractionSpeed = 1f; // 끌려가는 속도
+    private Rigidbody2D rb;
     void Start()
     {
         if (Platform == null)
@@ -16,6 +17,10 @@ public class Acrobat_SlowMoon : EnemyBullet
             donutCenter = Platform.transform;
         }
         transform.SetParent(Platform.transform);
+        rb = GetComponent<Rigidbody2D>();
+        Vector2 direction = rb.velocity;
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.Euler(0, 0, angle - 90);
     }
     void Update()
     {
@@ -34,5 +39,8 @@ public class Acrobat_SlowMoon : EnemyBullet
 
         // 물체를 목표 위치로 이동
         transform.position += directionToTarget.normalized * attractionSpeed * Time.deltaTime;
+        Vector2 direction = directionToTarget;
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.Euler(0, 0, angle - 90);
     }
 }

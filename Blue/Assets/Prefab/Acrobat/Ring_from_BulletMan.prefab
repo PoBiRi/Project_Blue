@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 230327652081839906}
   - component: {fileID: 7166466408174413505}
   m_Layer: 0
-  m_Name: Ring
+  m_Name: Ring_from_BulletMan
   m_TagString: EnemyBullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

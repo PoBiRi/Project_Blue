@@ -11,6 +11,7 @@ public class Acrobat : MonoBehaviour, Boss
     public GameObject ringPrefab;
     public GameObject slowMoonPrefab;
     public GameObject laserPrefab;
+    public GameObject laserEndPrefab;
     public GameObject Player;
     public Transform gunTransform;
     public Slider BossHpBar;
@@ -121,7 +122,7 @@ public class Acrobat : MonoBehaviour, Boss
         GameObject bullet = Instantiate(straightPrefab, spawn, Quaternion.identity);
         Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
         angle = Mathf.Atan2(direction.y, direction.x);
-        bullet.transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle * Mathf.Rad2Deg));
+        bullet.transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle * Mathf.Rad2Deg - 90));
 
 
         if (rb != null)
@@ -131,7 +132,7 @@ public class Acrobat : MonoBehaviour, Boss
         }
         bullet = Instantiate(straightPrefab, -spawn, Quaternion.identity);
         rb = bullet.GetComponent<Rigidbody2D>();
-        bullet.transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle * Mathf.Rad2Deg));
+        bullet.transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle * Mathf.Rad2Deg - 90));
 
         if (rb != null)
         {
@@ -182,9 +183,22 @@ public class Acrobat : MonoBehaviour, Boss
             float angle = angleStep * i + 45;
             Vector2 direction = gunTransform.transform.position.normalized;
             float toAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-            Vector2 spawn = new Vector2(Mathf.Cos(Mathf.Deg2Rad * angle), Mathf.Sin(Mathf.Deg2Rad * angle)).normalized * 5f;
+            Vector2 spawn = new Vector2(Mathf.Cos(Mathf.Deg2Rad * angle), Mathf.Sin(Mathf.Deg2Rad * angle)).normalized * 3f;
             // create bullet
-            Instantiate(laserPrefab, spawn, Quaternion.Euler(new Vector3(0, 0, toAngle)));
+            GameObject laser = Instantiate(laserPrefab, spawn, Quaternion.identity);
+            laser.GetComponent<Acrobat_Laser>().radius = 3f;
+
+            spawn = new Vector2(Mathf.Cos(Mathf.Deg2Rad * angle), Mathf.Sin(Mathf.Deg2Rad * angle)).normalized * 7f;
+            // create bullet
+            laser = Instantiate(laserPrefab, spawn, Quaternion.identity);
+            laser.GetComponent<Acrobat_Laser>().radius = 7f;
+            laser.GetComponent<Acrobat_Laser>().flag = true;
+
+            spawn = new Vector2(Mathf.Cos(Mathf.Deg2Rad * angle), Mathf.Sin(Mathf.Deg2Rad * angle)).normalized * 9.9f;
+            // create bullet
+            laser = Instantiate(laserEndPrefab, spawn, Quaternion.identity);
+            laser.GetComponent<Acrobat_Laser>().radius = 9.9f;
+            laser.GetComponent<Acrobat_Laser>().flag = true;
         }
     }
 
