@@ -25,11 +25,17 @@ public class MenuManage : MonoBehaviour
     public static bool isGameStart  { get; set; } = false;
 
     private bool isESC = false;
-    public int BossNum = 0;
+    public static int BossNum { get; set; } = 0;
+    public int BossNum_tmp = 0;
     private bool isDefeatFlag = false;
     private bool isWinFlag = false;
     private bool isMainStart = false;
 
+
+    private void Start()
+    {
+        BossNum = BossNum_tmp;
+    }
 
     private void Update()
     {
@@ -66,7 +72,8 @@ public class MenuManage : MonoBehaviour
                 if (!isDefeatFlag)
                 {
                     isDefeatFlag = true;
-                    StartCoroutine(gameoverDefeatAni(0f, 1f, 2f));
+                    float duration = MenuSounds.PlayerDefeat();
+                    StartCoroutine(gameoverDefeatAni(0f, 1f, duration));
                 }
             }
         }
@@ -86,6 +93,7 @@ public class MenuManage : MonoBehaviour
 
     public void main_gameStart()
     {
+        BossAndOstSounds.StopOst();
         Camera.main.transform.position = new Vector3(0, -2f, -10f);
         stopTime();
         isGameStart = false;
@@ -96,7 +104,7 @@ public class MenuManage : MonoBehaviour
         if (!isMainStart)
         {
             isMainStart = true;
-            float duration = GetComponent<MenuSounds>().audioClips[0].length;
+            float duration = MenuSounds.MainGameStart();
             StartCoroutine(mainFadeOutIn(duration));
         }
         else
@@ -112,6 +120,7 @@ public class MenuManage : MonoBehaviour
         CanvasGroup mainGroupBlack = GameObject.Find("BlackOut").GetComponent<CanvasGroup>();
         CanvasGroup mainGroup = GameObject.Find("Menues").GetComponent<CanvasGroup>();
         mainGroup.interactable = false;
+        mainGroup.blocksRaycasts = false;
 
         float elapsedTime = 0f;
         while (elapsedTime < duration)
@@ -138,6 +147,7 @@ public class MenuManage : MonoBehaviour
         mainGroup.alpha = 1;
         mainGroupBlack.alpha = 1;
         mainGroup.interactable = true;
+        mainGroup.blocksRaycasts = true;
         ScriptsAndFlyer.gameObject.SetActive(true);
         Flyer.gameObject.SetActive(true);
     }
@@ -191,6 +201,7 @@ public class MenuManage : MonoBehaviour
         isGameStart = false;
         gameOverDefeatMenues.alpha = 0;
         gameOverDefeatMenues.interactable = false;
+        gameOverDefeatMenues.blocksRaycasts = false;
         Color finalColor = gameOverDefeatMenu.GetComponent<Image>().color;
         finalColor.a = 0;
         gameOverDefeatMenu.GetComponent<Image>().color = finalColor;
@@ -203,12 +214,12 @@ public class MenuManage : MonoBehaviour
         startColor.a = startAlpha;  // 시작 alpha 값으로 설정
         gameOverDefeatMenu.GetComponent<Image>().color = startColor; // 초기 설정된 색상 적용
 
-        while (elapsedTime < duration)
+        while (elapsedTime < duration / 2)
         {
             elapsedTime += Time.unscaledDeltaTime;
 
             // 선형 보간을 사용하여 alpha 값 계산
-            float newAlpha = Mathf.Lerp(startAlpha, endAlpha, elapsedTime / duration);
+            float newAlpha = Mathf.Lerp(startAlpha, endAlpha, elapsedTime / (duration / 2));
 
             // 이미지의 alpha 값을 변경
             Color newColor = gameOverDefeatMenu.GetComponent<Image>().color;
@@ -226,15 +237,17 @@ public class MenuManage : MonoBehaviour
         deleteBullet();
 
         elapsedTime = 0f;
-        while (elapsedTime < duration)
+        while (elapsedTime < duration / 2)
         {
             elapsedTime += Time.unscaledDeltaTime;
-            float newAlpha = Mathf.Lerp(startAlpha, endAlpha, elapsedTime / duration); // 선형 보간
+            float newAlpha = Mathf.Lerp(startAlpha, endAlpha, elapsedTime / (duration / 2)); // 선형 보간
             gameOverDefeatMenues.alpha = newAlpha;
             yield return null;
         }
         gameOverDefeatMenues.alpha = endAlpha; // 최종 alpha 값 설정
         gameOverDefeatMenues.interactable = true;
+        gameOverDefeatMenues.blocksRaycasts = true;
+        BossAndOstSounds.DefeatMenu();
     }
 
     public void gameoverDefeat_restartGame()

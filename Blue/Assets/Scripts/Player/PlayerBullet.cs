@@ -20,6 +20,7 @@ public class PlayerBullet : MonoBehaviour
         if (other.CompareTag("EnemyBullet")) // meet bullet collapse
         {
             Destroy(gameObject);
+            PlayerSound.BulletDestroy();
         }
 
         if (other.CompareTag("Wall"))

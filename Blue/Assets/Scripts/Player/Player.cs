@@ -68,6 +68,7 @@ public class Player : MonoBehaviour
 
     private IEnumerator Dash()
     {
+        PlayerSound.DashSound();
         isDashing = true; // dashing
         gameObject.tag = "Dashing"; 
         Vector2 dashDirection = movement.normalized; // dash to move direction
@@ -138,6 +139,7 @@ public class Player : MonoBehaviour
 
     public void getDamage(int dmg) //getDamage to Player
     {
+        PlayerSound.HitSound();
         if (isDamaging) { return; }
         StartCoroutine(Damaging());
         PlayerHP -= dmg;

@@ -9,13 +9,6 @@ public class BulletShoot : MonoBehaviour
     public Transform playerTransform;
     public float bulletSpeed = 20f;
 
-    private AudioSource audioSource;
-    public AudioClip[] gunSounds;
-
-    private void Start()
-    {
-        audioSource = GetComponent<AudioSource>();
-    }
     // Update is called once per frame
     void Update()
     {
@@ -27,9 +20,7 @@ public class BulletShoot : MonoBehaviour
 
     void ShootBullet()
     {
-        int randomIndex = Random.Range(0, gunSounds.Length);
-        audioSource.clip = gunSounds[randomIndex];
-        audioSource.Play();
+        PlayerSound.GunSound();
         // Click to pos
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 

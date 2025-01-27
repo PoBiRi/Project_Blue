@@ -193,6 +193,7 @@ public class BeastTamer : MonoBehaviour, Boss
         {
             return;
         }
+        BossAndOstSounds.HitSound();
         BossHP -= dmg;
         if (BossHP <= 0)
         {
@@ -202,6 +203,7 @@ public class BeastTamer : MonoBehaviour, Boss
             }
             Player.GetComponent<Player>().ragingPush();
 
+            BossAndOstSounds.RageSound();
             BossHP = 0;
             rageFlag = true;
             animator.SetTrigger("Rage");
@@ -224,6 +226,7 @@ public class BeastTamer : MonoBehaviour, Boss
             }
             else if(!isMaleAttacked)
             {
+                PlayerSound.MaleAttack();
                 isMaleAttacked = true;
                 if (maleAttack == 2)
                 {
@@ -236,6 +239,7 @@ public class BeastTamer : MonoBehaviour, Boss
                 }
                 else
                 {
+                    BossAndOstSounds.RageSound();
                     animator.SetTrigger("Rage");
                     Player.GetComponent<Player>().ragingPush();
                     maleAttack++;

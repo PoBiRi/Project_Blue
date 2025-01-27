@@ -10,10 +10,12 @@ public class Scripts : MonoBehaviour
     public CanvasGroup canvasGroup;
     private MenuManage main;
     private Image Image;
+    private Button Button;
     private void Start()
     {
         main = GameObject.Find("EventSystem").GetComponent<MenuManage>();
         Image = gameObject.GetComponent<Image>();
+        Button = gameObject.GetComponent<Button>();
         Color color = Image.color;
         color.a = Mathf.Clamp01(0);
     }
@@ -30,6 +32,10 @@ public class Scripts : MonoBehaviour
     }
     private IEnumerator FadeCanvasGroup(float startAlpha, float endAlpha, float duration)
     {
+        canvasGroup.interactable = false;
+        canvasGroup.blocksRaycasts = false;
+        Button.interactable = false;
+
         float elapsedTime = 0f;
         while (elapsedTime < duration)
         {
@@ -61,6 +67,9 @@ public class Scripts : MonoBehaviour
         Color color = Image.color;
         color.a = Mathf.Clamp01(1);
         Image.color = color;
+        canvasGroup.interactable = true;
+        canvasGroup.blocksRaycasts = true;
+        Button.interactable = true;
         gameObject.SetActive(false);
         parent.SetActive(false);
         MenuManage.isGameStart = true;

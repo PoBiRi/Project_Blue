@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Flyer : MonoBehaviour
 {
@@ -11,9 +12,11 @@ public class Flyer : MonoBehaviour
     private Vector2 centerPosition;     // 화면 중앙 위치
     private Vector2 endTopPosition;     // 끝 위치 (화면 위)
     private bool isFirst = false;
+    private Button Button;
 
     void Start()
     {
+        Button = gameObject.GetComponent<Button>();
         // 초기 위치 설정
         RectTransform parentRect = flyer.parent.GetComponent<RectTransform>();
         float parentHeight = parentRect.rect.height;
@@ -22,8 +25,11 @@ public class Flyer : MonoBehaviour
         centerPosition = Vector2.zero; // 화면 중앙
         endTopPosition = new Vector2(0, parentHeight + 500); // 화면 위
 
+        float duration = BossAndOstSounds.DrumForFlyers();
+        BossAndOstSounds.ClapForFlyers();
+
         flyer.anchoredPosition = startBottomPosition; // 전단지를 화면 아래로 배치
-        StartCoroutine(SlideFlyerUnscaled(flyer, startBottomPosition, centerPosition, slideDuration));
+        StartCoroutine(SlideFlyerUnscaled(flyer, startBottomPosition, centerPosition, duration));
     }
     private void OnEnable()
     {
@@ -31,7 +37,9 @@ public class Flyer : MonoBehaviour
         {
             flyer.anchoredPosition = startBottomPosition; // 전단지를 화면 아래로 배치
                                                           // 시작 애니메이션 실행
-            StartCoroutine(SlideFlyerUnscaled(flyer, startBottomPosition, centerPosition, slideDuration));
+            float duration = BossAndOstSounds.DrumForFlyers();
+            BossAndOstSounds.ClapForFlyers();
+            StartCoroutine(SlideFlyerUnscaled(flyer, startBottomPosition, centerPosition, duration));
         }
     }
 
@@ -44,6 +52,8 @@ public class Flyer : MonoBehaviour
     private IEnumerator SlideFlyerUnscaled(RectTransform rect, Vector2 from, Vector2 to, float duration)
     {
         isFirst = true;
+        Button.interactable = false;
+
         float elapsedTime = 0f;
 
         while (elapsedTime < duration)
@@ -54,9 +64,10 @@ public class Flyer : MonoBehaviour
         }
 
         rect.anchoredPosition = to; // 최종 위치로 고정
+        Button.interactable = true;
 
-        if(to == Vector2.zero)  GameObject.Find("EventSystem").GetComponent<MenuManage>().spawnBoss();
-        else if(to == endTopPosition)
+        if (to == Vector2.zero) GameObject.Find("EventSystem").GetComponent<MenuManage>().spawnBoss();
+        else if (to == endTopPosition)
         {
             gameObject.SetActive(false);
             Scripts.SetActive(true);

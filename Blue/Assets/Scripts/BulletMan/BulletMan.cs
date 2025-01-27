@@ -29,7 +29,6 @@ public class BulletMan : MonoBehaviour, Boss
     private float playerAngle = 0f;
     private bool isFirst = true;
     private int maleAttack = 0;
-    private bool isMusic = false;
     private Animator animator;
     private bool isMaleAttacked = false;
 
@@ -41,16 +40,6 @@ public class BulletMan : MonoBehaviour, Boss
     }
     void Update()
     {
-        if (MenuManage.isGameStart && !isMusic)
-        {
-            gameObject.GetComponent<AudioSource>().Play();
-            isMusic = true;
-        }
-        if (!MenuManage.isGameStart && isMusic)
-        {
-            gameObject.GetComponent<AudioSource>().Stop();
-            isMusic = false;
-        }
         if (BossHpBar == null) // get HPBar Component
         {
             BossHpBar = GameObject.Find("EnemyHealthBar").GetComponent<Slider>();
@@ -75,7 +64,7 @@ public class BulletMan : MonoBehaviour, Boss
             if (count < 50)
             {
                 if(rageFlag) count++;
-                FireBulletCircle(flag, !rageFlag ? 12 : 60);
+                FireBulletCircle(flag, !rageFlag ? 12 : 40);
 
                 yield return new WaitForSeconds(rageFlag ? Pattern1_Interval - 1.8f : Pattern1_Interval);
                 if (flag) { flag = false; }
@@ -149,10 +138,10 @@ public class BulletMan : MonoBehaviour, Boss
             }
             else playerAngle = playerAngle + Random.Range(-20f, 20f);
         }
-        float angleStep =  rageFlag ? 320f /bulletCount : 360f / bulletCount;
+        float angleStep =  rageFlag ? 320f / bulletCount : 360f / bulletCount;
         for (int i = 0; i < bulletCount; i++)
         {
-            float size = rageFlag ? 0.5f : 0.1f;
+            float size = rageFlag ? 0.5f : 0.2f;
             float angle = rageFlag ? playerAngle + 20 + angleStep * i : flag ? angleStep * i : angleStep * i + 15;
             Vector2 direction = new Vector2(Mathf.Cos(Mathf.Deg2Rad * angle), Mathf.Sin(Mathf.Deg2Rad * angle));
             // create bullet
@@ -275,6 +264,7 @@ public class BulletMan : MonoBehaviour, Boss
         {
             return;
         }
+        BossAndOstSounds.HitSound();
         BossHP -= dmg;
         if (BossHP <= 0)
         {
@@ -284,6 +274,7 @@ public class BulletMan : MonoBehaviour, Boss
             }
             Player.GetComponent<Player>().ragingPush();
 
+            BossAndOstSounds.RageSound();
             BossHP = 0;
             rageFlag = true;
             animator.SetTrigger("Rage");
@@ -305,6 +296,7 @@ public class BulletMan : MonoBehaviour, Boss
             }
             else if(!isMaleAttacked)
             {
+                PlayerSound.MaleAttack();
                 isMaleAttacked = true;
                 if(maleAttack == 2)
                 {
@@ -317,6 +309,7 @@ public class BulletMan : MonoBehaviour, Boss
                 }
                 else
                 {
+                    BossAndOstSounds.RageSound();
                     animator.SetTrigger("Rage");
                     maleAttack++;
                     Player.GetComponent<Player>().ragingPush();

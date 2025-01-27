@@ -4,19 +4,53 @@ using UnityEngine;
 
 public class PlayerSound : MonoBehaviour
 {
+    private static PlayerSound instance;
     private AudioSource audioSource;
     public AudioClip[] audioClips;
+
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     private void Start()
     {
         if(audioSource == null)
         {
-            audioSource = GetComponent<AudioSource>();
+            audioSource = GetComponents<AudioSource>()[1];
         }
     }
 
-    public void DashSound()
+    public static void DashSound()
     {
-        audioSource.PlayOneShot(audioClips[0]);
+        instance.audioSource.PlayOneShot(instance.audioClips[0]);
+    }
+
+    public static void GunSound()
+    {
+        int randomIndex = Random.Range(1, 4);
+        instance.audioSource.PlayOneShot(instance.audioClips[randomIndex]);
+    }
+
+    public static void HitSound()
+    {
+        int randomIndex = Random.Range(4, 6);
+        instance.audioSource.PlayOneShot(instance.audioClips[randomIndex]);
+    }
+
+    public static void MaleAttack()
+    {
+        instance.audioSource.PlayOneShot(instance.audioClips[6]);
+    }
+    public static void BulletDestroy()
+    {
+        instance.audioSource.PlayOneShot(instance.audioClips[7]);
     }
 }
