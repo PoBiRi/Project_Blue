@@ -71,6 +71,7 @@ public class BossAndOstSounds : MonoBehaviour
     public static float DrumForFlyers()
     {
         instance.OstSource.PlayOneShot(instance.audioClips[10]);
+        instance.ambienceSource.PlayOneShot(instance.audioClips[9]);
         return instance.audioClips[10].length;
     }
     public static void ClapForFlyers()

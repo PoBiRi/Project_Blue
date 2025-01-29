@@ -52,7 +52,7 @@ public class BeastTamer_Wing : EnemyBullet
             // 새로운 오브젝트 생성
             GameObject newObject = Instantiate(Bullet, transform.position, Quaternion.identity);
             Rigidbody2D rb = newObject.GetComponent<Rigidbody2D>();
-            rb.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+            rb.transform.localScale = new Vector3(0.6f, 0.6f, 0.6f);
 
             // 배열 인덱스 순환
             currentIndex = (currentIndex + 1) % maxBullets;

@@ -132,9 +132,8 @@ public class MenuManage : MonoBehaviour
         }
         mainGroup.alpha = 0; // 최종 alpha 값 설정
 
-
         elapsedTime = 0f;
-        while (elapsedTime < duration)
+        while (elapsedTime < 2f)
         {
             elapsedTime += Time.unscaledDeltaTime;
             float newAlpha = Mathf.Lerp(1, 0, elapsedTime / 2f); // 선형 보간
@@ -162,9 +161,12 @@ public class MenuManage : MonoBehaviour
         gameObj.SetActive(false);
         optionMenu.SetActive(false);
         gameOverDefeatMenu.SetActive(false);
-        gameOverWinMenu.SetActive(false);
+        gameOverWinMenu.SetActive(true);
+        CanvasGroup EndingCG = GameObject.Find("EndingCG").GetComponent<CanvasGroup>();
+        EndingCG.alpha = 0f;
         GameObject[] tmp = GameObject.FindGameObjectsWithTag("Enemy");
         Destroy(tmp[0]);
+        gameOverWinMenu.SetActive(false);
         deleteBullet();
         BossNum = 0;
     }
@@ -332,11 +334,59 @@ public class MenuManage : MonoBehaviour
         Cane.anchoredPosition = initialPosition;
 
         BossNum++;
-        Destroy(tmp[0]);
         isGameOver = false;
         isWinFlag = false;
-        gameOverWinMenu.SetActive(false);
-        main_gameStart();
+        if (BossNum > 2)
+        {
+            float duration2 = BossAndOstSounds.DrumForFlyers();
+            CanvasGroup BlackOut = GameObject.Find("BlackOut").GetComponent<CanvasGroup>();
+            CanvasGroup EndingCG = GameObject.Find("EndingCG").GetComponent<CanvasGroup>();
+            CanvasGroup Exit2Main = GameObject.Find("EXIT2Main").GetComponent<CanvasGroup>();
+
+            Exit2Main.interactable = false;
+            Exit2Main.blocksRaycasts = false;
+
+            elapsedTime = 0f;
+            while (elapsedTime < duration2 / 2)
+            {
+                elapsedTime += Time.unscaledDeltaTime;
+                float newAlpha = Mathf.Lerp(0, 1, elapsedTime / (duration2 / 2)); // 선형 보간
+                BlackOut.alpha = newAlpha;
+                yield return null;
+            }
+            BlackOut.alpha = 1f; // 최종 alpha 값 설정
+
+            EndingCG.alpha = 1f;
+
+            elapsedTime = 0f;
+            while (elapsedTime < duration2 / 2)
+            {
+                elapsedTime += Time.unscaledDeltaTime;
+                float newAlpha = Mathf.Lerp(1, 0, elapsedTime / (duration2 / 2)); // 선형 보간
+                BlackOut.alpha = newAlpha;
+                yield return null;
+            }
+            BlackOut.alpha = 0f; // 최종 alpha 값 설정
+
+            elapsedTime = 0f;
+            while (elapsedTime < 1f)
+            {
+                elapsedTime += Time.unscaledDeltaTime;
+                float newAlpha = Mathf.Lerp(0, 1, elapsedTime / 1f); // 선형 보간
+                Exit2Main.alpha = newAlpha;
+                yield return null;
+            }
+            Exit2Main.alpha = 1f;
+
+            Exit2Main.interactable = true;
+            Exit2Main.blocksRaycasts = true;
+        }
+        else
+        {
+            Destroy(tmp[0]);
+            gameOverWinMenu.SetActive(false);
+            main_gameStart();
+        }
     }
 
         void deleteBullet()
