@@ -9,6 +9,8 @@ public class Acrobat_Laser : EnemyBullet
     public float radius;  // 보스를 중심으로 하는 원의 반지름
     private float angle = 0f;  // 현재 각도
     public bool flag = false; // 밧줄 상하 반전용
+    public bool selfDestroy = false;
+    private bool ragingPush = false;
 
     private void Start()
     {
@@ -24,6 +26,12 @@ public class Acrobat_Laser : EnemyBullet
 
     private void Update()
     {
+        if(selfDestroy)
+        {
+            selfDestroy = false;
+            ragingPush = true;
+            Destroy(gameObject, 20f);
+        }
         // 원을 그리며 이동할 각도 갱신
         angle += rotationSpeed * Time.deltaTime;  // 시간에 따라 각도 증가
         if (angle >= 360f)  // 각도가 360도를 넘으면 다시 0으로 설정
@@ -44,7 +52,13 @@ public class Acrobat_Laser : EnemyBullet
     {
         if (other.CompareTag("Player")) // meet player
         {
-            GameObject.Find("Player").GetComponent<Player>().getDamage(3);
+            Player player = GameObject.Find("Player").GetComponent<Player>();
+            player.getDamage(3);
+            if (ragingPush)
+            {
+                BossAndOstSounds.RageSound();
+                player.ragingPush();
+            }
         }
     }
 }
