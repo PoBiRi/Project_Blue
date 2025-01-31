@@ -169,6 +169,7 @@ public class MenuManage : MonoBehaviour
         gameOverWinMenu.SetActive(false);
         deleteBullet();
         BossNum = 0;
+        BossAndOstSounds.MainMenu();
     }
     
     public void spawnBoss()

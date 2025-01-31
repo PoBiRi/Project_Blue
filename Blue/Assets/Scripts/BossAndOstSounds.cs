@@ -28,6 +28,7 @@ public class BossAndOstSounds : MonoBehaviour
         audioSource = GetComponents<AudioSource>()[2];
         OstSource = GetComponents<AudioSource>()[3];
         ambienceSource = GetComponents<AudioSource>()[4];
+        MainMenu();
     }
 
     // Update is called once per frame
@@ -58,6 +59,11 @@ public class BossAndOstSounds : MonoBehaviour
     {
         instance.OstSource.Stop();
         instance.ambienceSource.Stop();
+    }
+    public static void MainMenu()
+    {
+        instance.OstSource.clip = instance.audioClips[11];
+        instance.OstSource.Play();
     }
     public static void RageSound()
     {

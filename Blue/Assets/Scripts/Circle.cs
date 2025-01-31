@@ -12,9 +12,9 @@ public class Circle : MonoBehaviour
         transform.Rotate(0, 0, rotationSpeed * Time.deltaTime); //rotate
     }
 
-    public void ChangeRotation(float tmp)
+    public void ChangeRotationBeastTamer()
     {
-        rotationSpeed = tmp;
+        rotationSpeed *= -1;
     }
 
     public void respawn()

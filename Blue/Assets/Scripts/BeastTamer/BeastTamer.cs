@@ -207,7 +207,7 @@ public class BeastTamer : MonoBehaviour, Boss
             BossHP = 0;
             rageFlag = true;
             animator.SetTrigger("Rage");
-            Platform.GetComponent<Circle>().ChangeRotation(-20f);
+            Platform.GetComponent<Circle>().ChangeRotationBeastTamer();
             StopAllCoroutines();
             deleteBullet();
             Invoke("stopCoritines", 1f);
@@ -246,6 +246,7 @@ public class BeastTamer : MonoBehaviour, Boss
                     StopAllCoroutines();
                     deleteBullet();
                     Invoke("stopCoritines", 1f);
+                    Platform.GetComponent<Circle>().ChangeRotationBeastTamer();
                 }
             }
         }

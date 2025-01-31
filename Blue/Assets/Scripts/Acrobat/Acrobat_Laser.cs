@@ -5,10 +5,10 @@ using UnityEngine;
 public class Acrobat_Laser : EnemyBullet
 {
     public GameObject Boss;
-    private float rotationSpeed = 20f;
+    public float rotationSpeed = 20f;
     public float radius;  // 보스를 중심으로 하는 원의 반지름
     private float angle = 0f;  // 현재 각도
-    public bool flag = false;
+    public bool flag = false; // 밧줄 상하 반전용
 
     private void Start()
     {
