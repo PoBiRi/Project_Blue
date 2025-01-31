@@ -311,13 +311,15 @@ public class MenuManage : MonoBehaviour
             yield return null;
         }
 
+
+        float caneDuration = BossAndOstSounds.BossDragged();
         Vector2 initialPosition = Cane.anchoredPosition;
         Vector2 downPosition = initialPosition + new Vector2(0, -450f);
         elapsedTime = 0f;
-        while (elapsedTime < duration)
+        while (elapsedTime < caneDuration / 2)
         {
             elapsedTime += Time.unscaledDeltaTime;
-            Cane.anchoredPosition = Vector2.Lerp(initialPosition, downPosition, elapsedTime / duration);
+            Cane.anchoredPosition = Vector2.Lerp(initialPosition, downPosition, elapsedTime / (caneDuration / 2));
             yield return null;
         }
         Cane.anchoredPosition = downPosition;
@@ -326,10 +328,10 @@ public class MenuManage : MonoBehaviour
         tmp[0].transform.SetParent(Cane.transform);
 
         elapsedTime = 0f;
-        while (elapsedTime < duration)
+        while (elapsedTime < caneDuration / 2)
         {
             elapsedTime += Time.unscaledDeltaTime;
-            Cane.anchoredPosition = Vector2.Lerp(downPosition, initialPosition, elapsedTime / duration);
+            Cane.anchoredPosition = Vector2.Lerp(downPosition, initialPosition, elapsedTime / (caneDuration / 2));
             yield return null;
         }
         Cane.anchoredPosition = initialPosition;
@@ -339,7 +341,7 @@ public class MenuManage : MonoBehaviour
         isWinFlag = false;
         if (BossNum > 2)
         {
-            float duration2 = BossAndOstSounds.DrumForFlyers();
+            float duration2 = BossAndOstSounds.GameClear();
             CanvasGroup BlackOut = GameObject.Find("BlackOut").GetComponent<CanvasGroup>();
             CanvasGroup EndingCG = GameObject.Find("EndingCG").GetComponent<CanvasGroup>();
             CanvasGroup Exit2Main = GameObject.Find("EXIT2Main").GetComponent<CanvasGroup>();
@@ -359,8 +361,9 @@ public class MenuManage : MonoBehaviour
 
             EndingCG.alpha = 1f;
 
+            BossAndOstSounds.DrumForFlyers();
             elapsedTime = 0f;
-            while (elapsedTime < duration2 / 2)
+            while (elapsedTime < duration2 /2 )
             {
                 elapsedTime += Time.unscaledDeltaTime;
                 float newAlpha = Mathf.Lerp(1, 0, elapsedTime / (duration2 / 2)); // 선형 보간
@@ -370,10 +373,10 @@ public class MenuManage : MonoBehaviour
             BlackOut.alpha = 0f; // 최종 alpha 값 설정
 
             elapsedTime = 0f;
-            while (elapsedTime < 1f)
+            while (elapsedTime < 2f)
             {
                 elapsedTime += Time.unscaledDeltaTime;
-                float newAlpha = Mathf.Lerp(0, 1, elapsedTime / 1f); // 선형 보간
+                float newAlpha = Mathf.Lerp(0, 1, elapsedTime / 2f); // 선형 보간
                 Exit2Main.alpha = newAlpha;
                 yield return null;
             }

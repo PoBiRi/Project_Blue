@@ -26,7 +26,7 @@ public class Flyer : MonoBehaviour
         endTopPosition = new Vector2(0, parentHeight + 500); // 화면 위
 
         float duration = BossAndOstSounds.DrumForFlyers();
-        //BossAndOstSounds.ClapForFlyers();
+        BossAndOstSounds.ClapForFlyers();
 
         flyer.anchoredPosition = startBottomPosition; // 전단지를 화면 아래로 배치
         StartCoroutine(SlideFlyerUnscaled(flyer, startBottomPosition, centerPosition, duration));
@@ -38,7 +38,7 @@ public class Flyer : MonoBehaviour
             flyer.anchoredPosition = startBottomPosition; // 전단지를 화면 아래로 배치
                                                           // 시작 애니메이션 실행
             float duration = BossAndOstSounds.DrumForFlyers();
-            //BossAndOstSounds.ClapForFlyers();
+            BossAndOstSounds.ClapForFlyers();
             StartCoroutine(SlideFlyerUnscaled(flyer, startBottomPosition, centerPosition, duration));
         }
     }

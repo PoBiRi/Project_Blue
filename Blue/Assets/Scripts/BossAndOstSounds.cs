@@ -77,13 +77,30 @@ public class BossAndOstSounds : MonoBehaviour
     public static float DrumForFlyers()
     {
         instance.OstSource.PlayOneShot(instance.audioClips[10]);
-        instance.ambienceSource.PlayOneShot(instance.audioClips[9]);
         return instance.audioClips[10].length;
+    }
+    public static float GameClear()
+    {
+        instance.ambienceSource.clip = instance.audioClips[13];
+        instance.ambienceSource.Play();
+        return instance.audioClips[13].length;
     }
     public static void ClapForFlyers()
     {
         instance.ambienceSource.PlayOneShot(instance.audioClips[9]);
         //instance.ambienceSource.clip = instance.audioClips[9];
         //instance.ambienceSource.Play();
+    }
+    public static float Scripts()
+    {
+        //instance.audioSource.clip = instance.audioClips[14];
+        //instance.audioSource.Play();
+        instance.audioSource.PlayOneShot(instance.audioClips[14]);
+        return instance.audioClips[14].length;
+    }
+    public static float BossDragged()
+    {
+        instance.audioSource.PlayOneShot(instance.audioClips[12]);
+        return instance.audioClips[12].length;
     }
 }

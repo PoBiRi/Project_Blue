@@ -27,6 +27,7 @@ public class Acrobat : MonoBehaviour, Boss
     private int maleAttack = 0;
     private Animator animator;
     private bool isMaleAttacked = false;
+    private bool isRotateChanged = false;
 
     // Start is called before the first frame update
     void Start()
@@ -162,15 +163,18 @@ public class Acrobat : MonoBehaviour, Boss
         Vector2 playerDirection = Player.transform.position;
         float startAngle = -45 / 2f; // 반원의 시작 각도
         float angleStep = 45 / (8 - 1); // 각 총알 사이의 각도 간격
+        float speed = rageFlag ? Random.Range(1f, 4f) : 1;
 
         for (int i = 0; i < 8; i++)
         {
+
             // 현재 총알의 각도 계산
             float currentAngle = startAngle + (i * angleStep);
             Vector2 direction = Quaternion.Euler(0, 0, currentAngle) * playerDirection;
 
             // 총알 생성
-            Instantiate(slowMoonPrefab, (Vector2)gunTransform.position + direction.normalized * 0.6f, Quaternion.identity);
+            GameObject bullet = Instantiate(slowMoonPrefab, (Vector2)gunTransform.position + direction.normalized * 0.6f, Quaternion.identity);
+            bullet.GetComponent<Acrobat_SlowMoon>().attractionSpeed = speed;
         }
     }
 
@@ -231,9 +235,15 @@ public class Acrobat : MonoBehaviour, Boss
             return;
         }
         BossAndOstSounds.HitSound();
-        BossHP -= dmg;
+        BossHP -= dmg;/*
+        if (!isRotateChanged && BossHP <= 30)
+        {
+            isRotateChanged = true;
+            Platform.GetComponent<Circle>().ChangeRotationAcrobat();
+        }*/
         if (BossHP <= 0)
         {
+            Platform.GetComponent<Circle>().ChangeRotationAcrobat();
             if (Player == null)
             {
                 Player = GameObject.Find("Player");

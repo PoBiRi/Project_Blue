@@ -6,8 +6,8 @@ public class Acrobat_SlowMoon : EnemyBullet
 {
     public GameObject Platform;
     private Transform donutCenter; // 도넛의 중심점
-    private float donutRadius =10f; // 도넛의 테두리 반지름
-    private float attractionSpeed = 1f; // 끌려가는 속도
+    private float donutRadius = 10f; // 도넛의 테두리 반지름
+    public float attractionSpeed = 1f; // 끌려가는 속도
     private Rigidbody2D rb;
     void Start()
     {

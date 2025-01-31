@@ -17,8 +17,34 @@ public class Circle : MonoBehaviour
         rotationSpeed *= -1;
     }
 
+    private IEnumerator ChangeRotationCorutine()
+    {
+        float minSpeed = 10f;
+        float maxSpeed = 30f;
+        while (true)
+        {
+            float targetSpeed = Random.Range(minSpeed, maxSpeed) * (Random.value > 0.5f ? 1 : -1); // 랜덤 속도 및 방향
+            float startSpeed = rotationSpeed;
+            float elapsedTime = 0f;
+
+            while (elapsedTime < 2f)
+            {
+                rotationSpeed = Mathf.Lerp(startSpeed, targetSpeed, elapsedTime / 2f);
+                elapsedTime += Time.deltaTime;
+                yield return null;
+            }
+
+            rotationSpeed = targetSpeed; // 최종 값 고정
+        }
+    }
+    public void ChangeRotationAcrobat()
+    {
+        StartCoroutine(ChangeRotationCorutine());
+    }
+
     public void respawn()
     {
+        StopAllCoroutines();
         rotationSpeed = 20f;
     }
 }

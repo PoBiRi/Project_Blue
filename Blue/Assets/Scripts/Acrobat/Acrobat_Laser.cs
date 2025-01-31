@@ -53,7 +53,7 @@ public class Acrobat_Laser : EnemyBullet
         if (other.CompareTag("Player")) // meet player
         {
             Player player = GameObject.Find("Player").GetComponent<Player>();
-            player.getDamage(3);
+            player.getDamage(ragingPush ? 10 : 3);
             if (ragingPush)
             {
                 BossAndOstSounds.RageSound();
