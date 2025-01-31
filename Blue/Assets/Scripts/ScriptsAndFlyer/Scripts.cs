@@ -33,6 +33,7 @@ public class Scripts : MonoBehaviour
         if(cliked > 2)
         {
             cliked = 0;
+            Text.text = "";
             startGame();
         }
         else
