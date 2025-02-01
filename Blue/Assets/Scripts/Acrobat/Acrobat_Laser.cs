@@ -45,6 +45,11 @@ public class Acrobat_Laser : EnemyBullet
 
         Vector3 directionToBoss = Boss.transform.position - transform.position;  // 보스 방향 계산
         float angleToRotate = Mathf.Atan2(directionToBoss.y, directionToBoss.x) * Mathf.Rad2Deg;  // 보스를 마주보는 회전 각도 계산
+        if (ragingPush)
+        {
+            angleToRotate -= 225;
+            if(flag) { angleToRotate += 207f; }
+        }
         transform.rotation = Quaternion.Euler(new Vector3(0, 0, flag ? angleToRotate - 180 : angleToRotate));  // 오브젝트 회전
     }
 

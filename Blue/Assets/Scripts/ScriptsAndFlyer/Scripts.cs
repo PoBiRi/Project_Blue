@@ -10,10 +10,12 @@ public class Scripts : MonoBehaviour
     public GameObject parent;
     public CanvasGroup canvasGroup;
     public TMP_Text Text;
+    public Sprite[] Sprites;
     private MenuManage main;
     private string currentText = "";
     private CanvasGroup scriptGroup;
     private int cliked = 0;
+    private Image Image;
 
     private string[,] dialogues = new string[3, 2]
     {
@@ -21,16 +23,18 @@ public class Scripts : MonoBehaviour
         {"Just so you know, I don't see you as an enemy.", "You are prey"},
         {"Is that all combattant?  It's a wonder that you survived this long.", "I don't like getting my hands dirty, I hope you won't mind."}
     };
-
-    private void Start()
+    private void OnEnable()
     {
+        Image = gameObject.GetComponent<Image>();
+        Image.sprite = Sprites[MenuManage.BossNum];
         scriptGroup = gameObject.GetComponent<CanvasGroup>();
         main = GameObject.Find("EventSystem").GetComponent<MenuManage>();
+        StartCoroutine(ShowText(dialogues[MenuManage.BossNum, cliked]));
     }
     public void onScriptsCliked()
     {
         cliked++;
-        if(cliked > 2)
+        if(cliked > 1)
         {
             cliked = 0;
             Text.text = "";
@@ -38,7 +42,7 @@ public class Scripts : MonoBehaviour
         }
         else
         {
-            StartCoroutine(ShowText(dialogues[MenuManage.BossNum, cliked - 1]));
+            StartCoroutine(ShowText(dialogues[MenuManage.BossNum, cliked]));
         }
     }
     private IEnumerator ShowText(string fullText)
@@ -83,19 +87,19 @@ public class Scripts : MonoBehaviour
         Vector3 bound = Map.GetComponent<Collider2D>().bounds.size;
         float YBounds = bound.y / 2;
         float camHeight = Camera.main.orthographicSize;
-        while (Camera.main.transform.position.y > -YBounds + camHeight)
+        Vector3 targetPos = new Vector3(0, -YBounds + camHeight, -10);
+        Vector3 startPos = Camera.main.transform.position;
+
+        elapsedTime = 0f;
+        while (elapsedTime < 2f)
         {
-            // 현재 위치에서 아래로 이동
-            Camera.main.transform.position = new Vector3(
-                0,
-                transform.position.y - 2.5f * Time.unscaledDeltaTime,
-                -10
-            );
-            yield return null; // 다음 프레임까지 대기
+            elapsedTime += Time.unscaledDeltaTime;
+            Camera.main.transform.position = Vector3.Lerp(startPos, targetPos, elapsedTime / 2f);
+            yield return null;
         }
 
         // 목표 위치 도달 후 위치 고정
-        Camera.main.transform.position = new Vector3(0, -YBounds + camHeight, -10);
+        Camera.main.transform.position = targetPos;
 
         main.startTime();
         scriptGroup.alpha = 1f;

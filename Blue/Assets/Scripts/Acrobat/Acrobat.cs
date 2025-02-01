@@ -27,7 +27,6 @@ public class Acrobat : MonoBehaviour, Boss
     private int maleAttack = 0;
     private Animator animator;
     private bool isMaleAttacked = false;
-    private bool isRotateChanged = false;
 
     // Start is called before the first frame update
     void Start()
@@ -173,7 +172,7 @@ public class Acrobat : MonoBehaviour, Boss
             Vector2 direction = Quaternion.Euler(0, 0, currentAngle) * playerDirection;
 
             // ÃÑ¾Ë »ý¼º
-            GameObject bullet = Instantiate(slowMoonPrefab, (Vector2)gunTransform.position + direction.normalized * 0.6f, Quaternion.identity);
+            GameObject bullet = Instantiate(slowMoonPrefab, (Vector2)gunTransform.position + direction.normalized * (rageFlag ? 1.3f : 0.6f), Quaternion.identity);
             bullet.GetComponent<Acrobat_SlowMoon>().attractionSpeed = speed;
         }
     }
@@ -189,20 +188,20 @@ public class Acrobat : MonoBehaviour, Boss
             // create bullet
             GameObject laser = Instantiate(laserPrefab, spawn, Quaternion.identity);
             laser.GetComponent<Acrobat_Laser>().radius = 3f;
-            if (rageFlag) laser.GetComponent<Acrobat_Laser>().rotationSpeed = (i + 1) * 50 * Mathf.Pow(-1, i + 1);
+            if (rageFlag) laser.GetComponent<Acrobat_Laser>().rotationSpeed = (i + 1) * 35 * Mathf.Pow(-1, i + 1);
 
             spawn = new Vector2(Mathf.Cos(Mathf.Deg2Rad * angle), Mathf.Sin(Mathf.Deg2Rad * angle)).normalized * 7f;
             // create bullet
             laser = Instantiate(laserPrefab, spawn, Quaternion.identity);
             laser.GetComponent<Acrobat_Laser>().radius = 7f;
-            if (rageFlag) laser.GetComponent<Acrobat_Laser>().rotationSpeed = (i + 1) * 50 * Mathf.Pow(-1, i + 1);
+            if (rageFlag) laser.GetComponent<Acrobat_Laser>().rotationSpeed = (i + 1) * 35 * Mathf.Pow(-1, i + 1);
             laser.GetComponent<Acrobat_Laser>().flag = true;
 
             spawn = new Vector2(Mathf.Cos(Mathf.Deg2Rad * angle), Mathf.Sin(Mathf.Deg2Rad * angle)).normalized * 9.9f;
             // create bullet
             laser = Instantiate(laserEndPrefab, spawn, Quaternion.identity);
             laser.GetComponent<Acrobat_Laser>().radius = 9.9f;
-            if (rageFlag) laser.GetComponent<Acrobat_Laser>().rotationSpeed = (i + 1) * 50 * Mathf.Pow(-1, i + 1);
+            if (rageFlag) laser.GetComponent<Acrobat_Laser>().rotationSpeed = (i + 1) * 35 * Mathf.Pow(-1, i + 1);
             laser.GetComponent<Acrobat_Laser>().flag = true;
         }
         if (rageFlag)
@@ -210,25 +209,24 @@ public class Acrobat : MonoBehaviour, Boss
             for(int i = 0; i < 4; i++)
             {
                 float angle = angleStep * i + 45;
-                Vector2 spawn = new Vector2(Mathf.Cos(Mathf.Deg2Rad * angle), Mathf.Sin(Mathf.Deg2Rad * angle)).normalized * 1f;
+                Vector2 spawn = new Vector2(Mathf.Cos(Mathf.Deg2Rad * angle), Mathf.Sin(Mathf.Deg2Rad * angle)).normalized * 2f;
                 GameObject laser = Instantiate(laserPrefab, spawn, Quaternion.identity);
-                laser.GetComponent<Acrobat_Laser>().radius = 1f;
-                if (rageFlag) laser.GetComponent<Acrobat_Laser>().rotationSpeed = 200f;
-                laser.GetComponent<Acrobat_Laser>().flag = true;
+                laser.GetComponent<Acrobat_Laser>().radius = 2f;
+                if (rageFlag) laser.GetComponent<Acrobat_Laser>().rotationSpeed = 20f;
                 laser.GetComponent<Acrobat_Laser>().selfDestroy = rageFlag;
 
-                spawn = new Vector2(Mathf.Cos(Mathf.Deg2Rad * angle), Mathf.Sin(Mathf.Deg2Rad * angle)).normalized * 3.9f;
+                spawn = new Vector2(Mathf.Cos(Mathf.Deg2Rad * (angle - 27f)), Mathf.Sin(Mathf.Deg2Rad * (angle - 27f))).normalized * 4.55f;
                 // create bullet
                 laser = Instantiate(laserEndPrefab, spawn, Quaternion.identity);
-                laser.GetComponent<Acrobat_Laser>().radius = 3.9f;
-                if (rageFlag) laser.GetComponent<Acrobat_Laser>().rotationSpeed = 200f;
+                laser.GetComponent<Acrobat_Laser>().radius = 4.55f;
+                if (rageFlag) laser.GetComponent<Acrobat_Laser>().rotationSpeed = 20f;
                 laser.GetComponent<Acrobat_Laser>().flag = true;
                 laser.GetComponent<Acrobat_Laser>().selfDestroy = rageFlag;
             }
         }
     }
 
-    public void getDamage(int dmg) // get Damage to Boss
+    public void getDamage(float dmg) // get Damage to Boss
     {
         if (rageFlag)
         {

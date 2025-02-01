@@ -28,11 +28,6 @@ public class BeastTamer_Wing : EnemyBullet
 
     protected override void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Bullet")) // meet bullet collapse
-        {
-            if(!isRage) OutBullet();
-        }
-
         if (other.CompareTag("Wall"))
         {
             OutBullet();

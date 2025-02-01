@@ -40,9 +40,11 @@ public class Player : MonoBehaviour
 
         if (movement != Vector2.zero)
         {
+            animator.SetBool("Running", true);
             float angle = Mathf.Atan2(movement.y, movement.x) * Mathf.Rad2Deg; // 방향 벡터에서 각도 계산
             transform.rotation = Quaternion.Euler(0f, 0f, angle); // 오브젝트 회전
         }
+        else animator.SetBool("Running", false);
 
 
         if (dashCooldownTimer > 0)
@@ -52,6 +54,12 @@ public class Player : MonoBehaviour
 
         // Shift to dash
         if (Input.GetKeyDown(KeyCode.LeftShift) && dashCooldownTimer <= 0 && movement != Vector2.zero)
+        {
+            StartCoroutine(Dash());
+        }
+
+        // Space to dash
+        if (Input.GetKeyDown(KeyCode.Space) && dashCooldownTimer <= 0 && movement != Vector2.zero)
         {
             StartCoroutine(Dash());
         }

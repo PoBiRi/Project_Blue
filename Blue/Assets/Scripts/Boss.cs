@@ -4,6 +4,6 @@ using UnityEngine;
 
 public interface Boss
 {
-    void getDamage(int damage);
+    void getDamage(float damage);
     void respawn();
 }

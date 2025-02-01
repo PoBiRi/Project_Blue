@@ -67,7 +67,7 @@ public class EXBoss : MonoBehaviour, Boss
         }
     }
 
-    public void getDamage(int dmg) // get Damage to Boss
+    public void getDamage(float dmg) // get Damage to Boss
     {
         if (rageFlag)
         {

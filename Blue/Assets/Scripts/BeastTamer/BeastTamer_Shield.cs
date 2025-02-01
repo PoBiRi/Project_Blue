@@ -60,7 +60,7 @@ public class BeastTamer_Shield : EnemyBullet
             {
                 spriteRenderer.enabled = false;
                 collider2D.enabled = false;
-                StartCoroutine(ReactivateAfterDelay(3f));
+                StartCoroutine(ReactivateAfterDelay(10f));
                 count = 0;
             }
             else count++;

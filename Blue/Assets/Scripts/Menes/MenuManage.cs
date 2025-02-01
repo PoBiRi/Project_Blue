@@ -9,6 +9,7 @@ public class MenuManage : MonoBehaviour
     public GameObject mainMenu;
     public GameObject controlsMenu;
     public GameObject optionMenu;
+    public GameObject CreditsMenu;
     public GameObject ScriptsAndFlyer;
     public GameObject Flyer;
     public GameObject gameOverDefeatMenu;
@@ -49,7 +50,8 @@ public class MenuManage : MonoBehaviour
             }
             else
             {
-                startTime();
+                Time.timeScale = 1f;
+                isGamePaused = false;
                 optionMenu.SetActive(false);
                 controlsMenu.SetActive(false);
                 isESC = false;
@@ -84,10 +86,10 @@ public class MenuManage : MonoBehaviour
         Time.timeScale = 0f; // 게임 정지
         isGamePaused = true;
     }
-    public void startTime()
+    public void startTime() //게임 천천히 시작
     {
         StartCoroutine(ChangeTimeScale(0, 1));
-        //Time.timeScale = 1f; // 게임 정지
+        //Time.timeScale = 1f;
         isGamePaused = false;
     }
 
@@ -126,11 +128,12 @@ public class MenuManage : MonoBehaviour
         while (elapsedTime < duration)
         {
             elapsedTime += Time.unscaledDeltaTime;
-            float newAlpha = Mathf.Lerp(1, 0, elapsedTime / duration); // 선형 보간
-            mainGroup.alpha = newAlpha;
+            float newAlpha = Mathf.Lerp(0, 1, elapsedTime / duration); // 선형 보간
+            mainGroupBlack.alpha = newAlpha;
             yield return null;
         }
-        mainGroup.alpha = 0; // 최종 alpha 값 설정
+        mainGroupBlack.alpha = 1; // 최종 alpha 값 설정
+        mainGroup.alpha = 0;
 
         elapsedTime = 0f;
         while (elapsedTime < 2f)
@@ -142,11 +145,11 @@ public class MenuManage : MonoBehaviour
         }
         mainGroupBlack.alpha = 0;
 
-        mainMenu.SetActive(false);
         mainGroup.alpha = 1;
-        mainGroupBlack.alpha = 1;
+        mainGroupBlack.alpha = 0;
         mainGroup.interactable = true;
         mainGroup.blocksRaycasts = true;
+        mainMenu.SetActive(false);
         ScriptsAndFlyer.gameObject.SetActive(true);
         Flyer.gameObject.SetActive(true);
     }
@@ -187,6 +190,16 @@ public class MenuManage : MonoBehaviour
         controlsMenu.SetActive(true);
     }
 
+    public void CreditsOn()
+    {
+        CreditsMenu.SetActive(true);
+    }
+
+    public void CreditsBack()
+    {
+        CreditsMenu.SetActive(false);
+    }
+
     public void controlsMenu_Off()
     {
         controlsMenu.SetActive(false);
@@ -194,7 +207,8 @@ public class MenuManage : MonoBehaviour
 
     public void option_returnToGame()
     {
-        startTime(); 
+        Time.timeScale = 1f;
+        isGamePaused = false;
         optionMenu.SetActive(false);
         isESC = false;
     }

@@ -8,14 +8,18 @@ public class Flyer : MonoBehaviour
     public RectTransform flyer; // 전단지 UI의 RectTransform
     public float slideDuration = 1f; // 슬라이드 시간
     public GameObject Scripts;
+    public Sprite[] Sprites;
     private Vector2 startBottomPosition; // 시작 위치 (화면 아래)
     private Vector2 centerPosition;     // 화면 중앙 위치
     private Vector2 endTopPosition;     // 끝 위치 (화면 위)
     private bool isFirst = false;
     private Button Button;
+    private Image Image;
 
     void Start()
     {
+        Image = gameObject.GetComponent<Image>();
+        Image.sprite = Sprites[MenuManage.BossNum];
         Button = gameObject.GetComponent<Button>();
         // 초기 위치 설정
         RectTransform parentRect = flyer.parent.GetComponent<RectTransform>();
@@ -33,7 +37,9 @@ public class Flyer : MonoBehaviour
     }
     private void OnEnable()
     {
-        if(isFirst)
+        Image = gameObject.GetComponent<Image>();
+        Image.sprite = Sprites[MenuManage.BossNum];
+        if (isFirst)
         {
             flyer.anchoredPosition = startBottomPosition; // 전단지를 화면 아래로 배치
                                                           // 시작 애니메이션 실행

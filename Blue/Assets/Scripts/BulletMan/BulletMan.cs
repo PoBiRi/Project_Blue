@@ -64,7 +64,7 @@ public class BulletMan : MonoBehaviour, Boss
             if (count < 50)
             {
                 if(rageFlag) count++;
-                FireBulletCircle(flag, !rageFlag ? 12 : 40);
+                FireBulletCircle(flag, !rageFlag ? 12 : 30);
 
                 yield return new WaitForSeconds(rageFlag ? Pattern1_Interval - 1.8f : Pattern1_Interval);
                 if (flag) { flag = false; }
@@ -141,7 +141,7 @@ public class BulletMan : MonoBehaviour, Boss
         float angleStep =  rageFlag ? 320f / bulletCount : 360f / bulletCount;
         for (int i = 0; i < bulletCount; i++)
         {
-            float size = rageFlag ? 0.5f : 0.2f;
+            float size = rageFlag ? 0.7f : 0.2f;
             float angle = rageFlag ? playerAngle + 20 + angleStep * i : flag ? angleStep * i : angleStep * i + 15;
             Vector2 direction = new Vector2(Mathf.Cos(Mathf.Deg2Rad * angle), Mathf.Sin(Mathf.Deg2Rad * angle));
             // create bullet
@@ -258,7 +258,7 @@ public class BulletMan : MonoBehaviour, Boss
         }
     }
 
-    public void getDamage(int dmg) // get Damage to Boss
+    public void getDamage(float dmg) // get Damage to Boss
     {
         if (rageFlag)
         {

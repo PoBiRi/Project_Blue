@@ -31,7 +31,7 @@ public class PlayerBullet : MonoBehaviour
         if (other.CompareTag("Enemy")) // meet enemy
         {
             Destroy(gameObject);
-            GameObject.FindWithTag("Enemy").GetComponent<Boss>().getDamage(10);
+            GameObject.FindWithTag("Enemy").GetComponent<Boss>().getDamage(0.5f);
         }
     }
 }
