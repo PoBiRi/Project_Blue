@@ -28,6 +28,11 @@ public class BeastTamer_Wing : EnemyBullet
 
     protected override void OnTriggerEnter2D(Collider2D other)
     {
+        if (other.CompareTag("Bullet"))
+        {
+            Destroy(other.gameObject);
+        }
+
         if (other.CompareTag("Wall"))
         {
             OutBullet();

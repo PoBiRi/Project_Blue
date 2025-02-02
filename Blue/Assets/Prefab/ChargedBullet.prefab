@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 5761319377574434677}
   - component: {fileID: 2717095785887060030}
   - component: {fileID: 9056505617582938758}
-  - component: {fileID: 6582364278560990182}
-  - component: {fileID: 1879879367789027191}
   - component: {fileID: 2498607684689815892}
+  - component: {fileID: 3932765979807221003}
+  - component: {fileID: 7874557999534071906}
   m_Layer: 0
   m_Name: ChargedBullet
   m_TagString: Bullet
@@ -115,7 +115,19 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!95 &6582364278560990182
+--- !u!114 &2498607684689815892
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9021879273199654084}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55c65086e51074d4e9f51d38a5505a39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!95 &3932765979807221003
 Animator:
   serializedVersion: 5
   m_ObjectHideFlags: 0
@@ -125,7 +137,7 @@ Animator:
   m_GameObject: {fileID: 9021879273199654084}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 5d4697fa5ca903e4aa06b20256badc4d, type: 2}
+  m_Controller: {fileID: 9100000, guid: ecc789c5ebf980647a10aaece4d1923a, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -136,7 +148,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!60 &1879879367789027191
+--- !u!60 &7874557999534071906
 PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -180,28 +192,71 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 0.25, y: 0.63}
-      - {x: 0.11, y: 0.71}
-      - {x: -0.14999999, y: 0.71}
-      - {x: -0.32999998, y: 0.48999998}
-      - {x: -0.32999998, y: -0.42999998}
-      - {x: -0.29, y: -0.51}
-      - {x: -0.089999996, y: -0.71}
-      - {x: 0.01, y: -0.71}
-      - {x: 0.14999999, y: -0.66999996}
-      - {x: 0.29, y: -0.47}
-      - {x: 0.32999998, y: -0.37}
-      - {x: 0.32999998, y: 0.37}
+    - - {x: -0.16, y: -1.62}
+      - {x: -0.26, y: -1.6999999}
+      - {x: -0.29999998, y: -1.8}
+      - {x: -0.19999999, y: -1.88}
+      - {x: -0.14, y: -1.88}
+      - {x: -0.099999994, y: -1.8199999}
+      - {x: -0.099999994, y: -1.64}
+    - - {x: 0.32, y: -1.38}
+      - {x: 0.22, y: -1.54}
+      - {x: 0.22, y: -1.5999999}
+      - {x: 0.28, y: -1.62}
+      - {x: 0.42, y: -1.62}
+      - {x: 0.42, y: -1.38}
+      - {x: 0.38, y: -1.36}
+    - - {x: -0.22, y: -1.3199999}
+      - {x: -0.16, y: -1.4599999}
+      - {x: -0.06, y: -1.56}
+      - {x: 0, y: -1.54}
+      - {x: 0, y: -1.1}
+      - {x: -0.099999994, y: -1.1}
+      - {x: -0.22, y: -1.16}
+    - - {x: 0.24, y: -0.78}
+      - {x: 0.16, y: -0.78}
+      - {x: 0.08, y: -0.97999996}
+      - {x: 0.08, y: -1.16}
+      - {x: 0.34, y: -1.16}
+      - {x: 0.35999998, y: -1.12}
+      - {x: 0.35999998, y: -1.02}
+    - - {x: -0.24, y: -0.58}
+      - {x: -0.39999998, y: -0.79999995}
+      - {x: -0.39999998, y: -0.88}
+      - {x: -0.38, y: -1}
+      - {x: -0.12, y: -1.04}
+      - {x: -0.06, y: -1.04}
+      - {x: -0.06, y: -0.58}
+    - - {x: 0.39999998, y: -0.78}
+      - {x: 0.35999998, y: -0.82}
+      - {x: 0.38, y: -0.9}
+      - {x: 0.45999998, y: -1.02}
+      - {x: 0.52, y: -1.02}
+      - {x: 0.53999996, y: -1}
+      - {x: 0.53999996, y: -0.84}
+      - {x: 0.52, y: -0.78}
+    - - {x: 0.45999998, y: -0.02}
+      - {x: 0.45999998, y: 0.7}
+      - {x: 0.44, y: 1.04}
+      - {x: 0.34, y: 1.4}
+      - {x: 0.099999994, y: 1.8199999}
+      - {x: -0.099999994, y: 1.8199999}
+      - {x: -0.22, y: 1.76}
+      - {x: -0.45999998, y: 1.22}
+      - {x: -0.5, y: 0.74}
+      - {x: -0.53999996, y: 0.68}
+      - {x: -0.53999996, y: -0.08}
+      - {x: -0.44, y: -0.29999998}
+      - {x: -0.53999996, y: -0.71999997}
+      - {x: -0.45999998, y: -0.74}
+      - {x: -0.38, y: -0.68}
+      - {x: -0.06, y: -0.58}
+      - {x: -0.04, y: -0.52}
+      - {x: 0.02, y: -0.71999997}
+      - {x: 0.06, y: -0.79999995}
+      - {x: 0.12, y: -0.79999995}
+      - {x: 0.17999999, y: -0.78}
+      - {x: 0.48, y: -0.5}
+      - {x: 0.5, y: -0.42}
+      - {x: 0.5, y: -0.28}
   m_UseDelaunayMesh: 0
---- !u!114 &2498607684689815892
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9021879273199654084}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 55c65086e51074d4e9f51d38a5505a39, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

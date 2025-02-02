@@ -14,6 +14,7 @@ public class BulletShoot : MonoBehaviour
     private float nextFireTime = 0f; // 다음 발사 시간
     private bool isCharging = false;
     private float chargeTimer = 0f;
+    private bool isCharged = false;
     public float minChargeTime = 1f;  // 최소 차징 시간
     private Animator animator;
 
@@ -24,32 +25,39 @@ public class BulletShoot : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(!MenuManage.isGameStart) return;
+        if(!MenuManage.isGameStart || MenuManage.isGamePaused) return;
         if(Input.GetMouseButtonDown(0))
         {
             animator.SetBool("IsCharging", true);
+            PlayerSound.Charging();
             isCharging = true;
             chargeTimer = 0f;
         }
         if (isCharging)
         {
             chargeTimer += Time.deltaTime;
-            if (chargeTimer >= minChargeTime)
+            if (!isCharged && chargeTimer >= minChargeTime)
             {
+                isCharged = true;
                 animator.SetBool("IsCharged", true);
+                PlayerSound.ChargingComplete();
             }
         }
         // 마우스 버튼을 떼면 발사
         if (Input.GetMouseButtonUp(0))
         {
+            PlayerSound.ChargingStop();
             isCharging = false;
+            isCharged = false;
             animator.SetBool("IsCharging", false);
             animator.SetBool("IsCharged", false);
 
             if (chargeTimer >= minChargeTime)
             {
                 ChargedBullet();
+                PlayerSound.ChargingShot();
             }
+            else PlayerSound.ChargingFail();
         }
 
         if (!isCharging && Time.time >= nextFireTime)

@@ -197,6 +197,7 @@ public class BeastTamer : MonoBehaviour, Boss
         BossHP -= dmg;
         if (BossHP <= 0)
         {
+            GameObject.Find("MeleeAttack").GetComponent<MeleeAttack>().InfoMelee();
             if (Player == null)
             {
                 Player = GameObject.Find("Player");

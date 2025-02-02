@@ -10,6 +10,7 @@ public class BossAndOstSounds : MonoBehaviour
     private AudioSource audioSource;
     private AudioSource OstSource;
     private AudioSource ambienceSource;
+    private AudioSource pauseSource;
 
     private void Awake()
     {
@@ -28,6 +29,7 @@ public class BossAndOstSounds : MonoBehaviour
         audioSource = GetComponents<AudioSource>()[2];
         OstSource = GetComponents<AudioSource>()[3];
         ambienceSource = GetComponents<AudioSource>()[4];
+        pauseSource = GetComponents<AudioSource>()[5];
         MainMenu();
     }
 
@@ -38,6 +40,9 @@ public class BossAndOstSounds : MonoBehaviour
         {
             OstSource.clip = audioClips[MenuManage.BossNum];
             OstSource.Play();
+            pauseSource.clip = audioClips[MenuManage.BossNum + 15];
+            pauseSource.Play();
+            pauseSource.mute = true;
             ambienceSource.clip = audioClips[8];
             ambienceSource.Play();
             isMusic = true;
@@ -45,7 +50,10 @@ public class BossAndOstSounds : MonoBehaviour
         if (!MenuManage.isGameStart && isMusic)
         {
             OstSource.Stop();
+            OstSource.mute = false;
             ambienceSource.Stop();
+            pauseSource.Stop();
+            pauseSource.mute = true;
             isMusic = false;
         }
     }
@@ -62,6 +70,10 @@ public class BossAndOstSounds : MonoBehaviour
     }
     public static void MainMenu()
     {
+        instance.ambienceSource.Stop();
+        instance.OstSource.mute = false;
+        instance.pauseSource.Stop();
+        instance.pauseSource.mute = true;
         instance.OstSource.clip = instance.audioClips[11];
         instance.OstSource.Play();
     }
@@ -102,5 +114,15 @@ public class BossAndOstSounds : MonoBehaviour
     {
         instance.audioSource.PlayOneShot(instance.audioClips[12]);
         return instance.audioClips[12].length;
+    }
+    public static void Pause()
+    {
+        instance.OstSource.mute = true;
+        instance.pauseSource.mute = false;
+    }
+    public static void Resume()
+    {
+        instance.pauseSource.mute = true;
+        instance.OstSource.mute = false;
     }
 }

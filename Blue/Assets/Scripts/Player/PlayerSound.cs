@@ -53,4 +53,25 @@ public class PlayerSound : MonoBehaviour
     {
         instance.audioSource.PlayOneShot(instance.audioClips[7]);
     }
+    public static void Charging()
+    {
+        instance.audioSource.clip = instance.audioClips[8];
+        instance.audioSource.Play();
+    }
+    public static void ChargingStop()
+    {
+        instance.audioSource.Stop();
+    }
+    public static void ChargingComplete()
+    {
+        instance.audioSource.PlayOneShot(instance.audioClips[9]);
+    }
+    public static void ChargingFail()
+    {
+        instance.audioSource.PlayOneShot(instance.audioClips[10]);
+    }
+    public static void ChargingShot()
+    {
+        instance.audioSource.PlayOneShot(instance.audioClips[11]);
+    }
 }

@@ -9,6 +9,11 @@ public class Acrobat_Straight : EnemyBullet
 
     protected override void OnTriggerEnter2D(Collider2D other)
     {
+        if (other.CompareTag("Bullet"))
+        {
+            Destroy(other.gameObject);
+        }
+
         if (other.CompareTag("Wall"))
         {
             if (flag) OutBullet();

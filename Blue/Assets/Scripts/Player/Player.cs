@@ -34,6 +34,7 @@ public class Player : MonoBehaviour
     void Update()
     {
         animator.SetBool("Dash", isDashing ?  true : false);
+        animator.SetBool("isDamaging", isDamaging ? true : false);
         if (MenuManage.isGamePaused || isRaging) return;
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");

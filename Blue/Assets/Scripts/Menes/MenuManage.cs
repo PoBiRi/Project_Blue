@@ -45,12 +45,14 @@ public class MenuManage : MonoBehaviour
             if(!isESC)
             {
                 stopTime(); // 게임 정지
+                BossAndOstSounds.Pause();
                 optionMenu.SetActive(true);
                 isESC = true;
             }
             else
             {
                 Time.timeScale = 1f;
+                BossAndOstSounds.Resume();
                 isGamePaused = false;
                 optionMenu.SetActive(false);
                 controlsMenu.SetActive(false);
@@ -208,6 +210,7 @@ public class MenuManage : MonoBehaviour
     public void option_returnToGame()
     {
         Time.timeScale = 1f;
+        BossAndOstSounds.Resume();
         isGamePaused = false;
         optionMenu.SetActive(false);
         isESC = false;

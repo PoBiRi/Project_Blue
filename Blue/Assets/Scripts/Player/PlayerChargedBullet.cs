@@ -15,7 +15,7 @@ public class PlayerChargedBullet : PlayerBullet
         if (other.CompareTag("Enemy")) // meet enemy
         {
             Destroy(gameObject);
-            GameObject.FindWithTag("Enemy").GetComponent<Boss>().getDamage(2.5f);
+            GameObject.FindWithTag("Enemy").GetComponent<Boss>().getDamage(2f);
         }
     }
 }

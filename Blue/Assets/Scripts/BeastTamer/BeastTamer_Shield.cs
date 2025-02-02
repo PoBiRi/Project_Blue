@@ -64,6 +64,7 @@ public class BeastTamer_Shield : EnemyBullet
                 count = 0;
             }
             else count++;
+            Destroy(other.gameObject);
         }
     }
     private IEnumerator ReactivateAfterDelay(float delay)

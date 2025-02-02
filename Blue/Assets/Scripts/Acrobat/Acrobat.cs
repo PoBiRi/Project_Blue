@@ -86,7 +86,7 @@ public class Acrobat : MonoBehaviour, Boss
     {
         while (true) // 무한 반복
         {
-            yield return new WaitForSeconds(rageFlag ? Pattern4_Interval - 0.5f : Pattern4_Interval);
+            yield return new WaitForSeconds(rageFlag ? Pattern4_Interval - 0.7f : Pattern4_Interval);
 
             SlowMoon();
         }
@@ -180,24 +180,28 @@ public class Acrobat : MonoBehaviour, Boss
     //For Pattern5
     void Laser()
     {
+        if (Player == null)
+        {
+            Player = GameObject.Find("Player");
+        }
         float angleStep = 360f / 4;
         for (int i = 0; i < (rageFlag ? 3 : 4); i++)
         {
-            float angle = rageFlag ? 0 : angleStep * i + 45;
-            Vector2 spawn = new Vector2(Mathf.Cos(Mathf.Deg2Rad * angle), Mathf.Sin(Mathf.Deg2Rad * angle)).normalized * 3f;
+            float angle = angleStep * i + 45;
+            Vector2 spawn = rageFlag ? Player.transform.position.normalized * -3f : new Vector2(Mathf.Cos(Mathf.Deg2Rad * angle), Mathf.Sin(Mathf.Deg2Rad * angle)).normalized * 3f;
             // create bullet
             GameObject laser = Instantiate(laserPrefab, spawn, Quaternion.identity);
             laser.GetComponent<Acrobat_Laser>().radius = 3f;
             if (rageFlag) laser.GetComponent<Acrobat_Laser>().rotationSpeed = (i + 1) * 35 * Mathf.Pow(-1, i + 1);
 
-            spawn = new Vector2(Mathf.Cos(Mathf.Deg2Rad * angle), Mathf.Sin(Mathf.Deg2Rad * angle)).normalized * 7f;
+            spawn = rageFlag ? Player.transform.position.normalized * -7f : new Vector2(Mathf.Cos(Mathf.Deg2Rad * angle), Mathf.Sin(Mathf.Deg2Rad * angle)).normalized * 7f;
             // create bullet
             laser = Instantiate(laserPrefab, spawn, Quaternion.identity);
             laser.GetComponent<Acrobat_Laser>().radius = 7f;
             if (rageFlag) laser.GetComponent<Acrobat_Laser>().rotationSpeed = (i + 1) * 35 * Mathf.Pow(-1, i + 1);
             laser.GetComponent<Acrobat_Laser>().flag = true;
 
-            spawn = new Vector2(Mathf.Cos(Mathf.Deg2Rad * angle), Mathf.Sin(Mathf.Deg2Rad * angle)).normalized * 9.9f;
+            spawn = rageFlag ? Player.transform.position.normalized * -9.9f : new Vector2(Mathf.Cos(Mathf.Deg2Rad * angle), Mathf.Sin(Mathf.Deg2Rad * angle)).normalized * 9.9f;
             // create bullet
             laser = Instantiate(laserEndPrefab, spawn, Quaternion.identity);
             laser.GetComponent<Acrobat_Laser>().radius = 9.9f;
@@ -241,6 +245,7 @@ public class Acrobat : MonoBehaviour, Boss
         }*/
         if (BossHP <= 0)
         {
+            GameObject.Find("MeleeAttack").GetComponent<MeleeAttack>().InfoMelee();
             Platform.GetComponent<Circle>().ChangeRotationAcrobat();
             if (Player == null)
             {
