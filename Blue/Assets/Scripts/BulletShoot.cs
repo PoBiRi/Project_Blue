@@ -46,18 +46,7 @@ public class BulletShoot : MonoBehaviour
         // 마우스 버튼을 떼면 발사
         if (Input.GetMouseButtonUp(0))
         {
-            PlayerSound.ChargingStop();
-            isCharging = false;
-            isCharged = false;
-            animator.SetBool("IsCharging", false);
-            animator.SetBool("IsCharged", false);
-
-            if (chargeTimer >= minChargeTime)
-            {
-                ChargedBullet();
-                PlayerSound.ChargingShot();
-            }
-            else PlayerSound.ChargingFail();
+            ChargeFire();
         }
 
         if (!isCharging && Time.time >= nextFireTime)
@@ -65,6 +54,34 @@ public class BulletShoot : MonoBehaviour
             ShootBullet();
             nextFireTime = Time.time + fireRate;
         }
+    }
+
+    public void ChargeFire()
+    {
+        PlayerSound.ChargingStop();
+        isCharging = false;
+        isCharged = false;
+        animator.SetBool("IsCharging", false);
+        animator.SetBool("IsCharged", false);
+
+        if (chargeTimer >= minChargeTime)
+        {
+            ChargedBullet();
+            PlayerSound.ChargingShot();
+        }
+        else PlayerSound.ChargingFail();
+    }
+    public void WhenDead()
+    {
+        if(animator == null)
+        {
+            animator = GetComponent<Animator>();
+        }
+        PlayerSound.ChargingStop();
+        isCharging = false;
+        isCharged = false;
+        animator.SetBool("IsCharging", false);
+        animator.SetBool("IsCharged", false);
     }
 
     void ChargedBullet()

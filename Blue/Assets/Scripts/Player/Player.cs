@@ -158,6 +158,7 @@ public class Player : MonoBehaviour
             Time.timeScale = 0f;
             MenuManage.isWin = false;
             MenuManage.isGameOver = true;
+            gameObject.GetComponent<BulletShoot>().WhenDead();
             Debug.Log("PlayerDead");
         }
         PlayerHpBar.value = PlayerHP / 100;
@@ -174,6 +175,7 @@ public class Player : MonoBehaviour
     {
         recoverHP(100);
         transform.position = new Vector3(0, -6.5f, 0);
+        transform.rotation = Quaternion.Euler(0f, 0f, 90);
         gameObject.tag = "Player";
         isDashing = false; // dashing off
         isDamaging = false;

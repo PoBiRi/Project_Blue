@@ -256,7 +256,7 @@ public class Acrobat : MonoBehaviour, Boss
             BossAndOstSounds.RageSound();
             BossHP = 0;
             rageFlag = true;
-            animator.SetTrigger("Rage");
+            animator.SetBool("Rage", true);
             StopAllCoroutines();
             deleteBullet();
             Invoke("stopCoritines", 1f);
@@ -289,7 +289,7 @@ public class Acrobat : MonoBehaviour, Boss
                 else
                 {
                     BossAndOstSounds.RageSound();
-                    animator.SetTrigger("Rage");
+                    animator.SetTrigger("Damage");
                     Player.GetComponent<Player>().ragingPush();
                     StopAllCoroutines();
                     deleteBullet();

@@ -54,6 +54,7 @@ public class MenuManage : MonoBehaviour
                 Time.timeScale = 1f;
                 BossAndOstSounds.Resume();
                 isGamePaused = false;
+                GameObject.Find("Player").GetComponent<BulletShoot>().ChargeFire();
                 optionMenu.SetActive(false);
                 controlsMenu.SetActive(false);
                 isESC = false;
@@ -211,6 +212,7 @@ public class MenuManage : MonoBehaviour
     {
         Time.timeScale = 1f;
         BossAndOstSounds.Resume();
+        GameObject.Find("Player").GetComponent<BulletShoot>().ChargeFire();
         isGamePaused = false;
         optionMenu.SetActive(false);
         isESC = false;

@@ -278,7 +278,7 @@ public class BulletMan : MonoBehaviour, Boss
             BossAndOstSounds.RageSound();
             BossHP = 0;
             rageFlag = true;
-            animator.SetTrigger("Rage");
+            animator.SetBool("Rage", true);
             StopAllCoroutines();
             deleteBullet();
             Invoke("stopCoritines", 1f);
@@ -310,8 +310,8 @@ public class BulletMan : MonoBehaviour, Boss
                 }
                 else
                 {
+                    animator.SetTrigger("Damage");
                     BossAndOstSounds.RageSound();
-                    animator.SetTrigger("Rage");
                     maleAttack++;
                     Player.GetComponent<Player>().ragingPush();
                     StopAllCoroutines();

@@ -207,7 +207,7 @@ public class BeastTamer : MonoBehaviour, Boss
             BossAndOstSounds.RageSound();
             BossHP = 0;
             rageFlag = true;
-            animator.SetTrigger("Rage");
+            animator.SetBool("Rage", true);
             Platform.GetComponent<Circle>().ChangeRotationBeastTamer();
             StopAllCoroutines();
             deleteBullet();
@@ -241,7 +241,7 @@ public class BeastTamer : MonoBehaviour, Boss
                 else
                 {
                     BossAndOstSounds.RageSound();
-                    animator.SetTrigger("Rage");
+                    animator.SetTrigger("Damage");
                     Player.GetComponent<Player>().ragingPush();
                     maleAttack++;
                     StopAllCoroutines();
